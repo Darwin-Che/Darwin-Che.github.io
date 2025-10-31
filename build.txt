@@ -1,0 +1,14 @@
+```
+python3 -m venv .venv
+source .venv/bin/activate
+pip install sphinx sphinx-rtd-theme myst-parser
+sphinx-quickstart
+```
+
+```
+make html
+```
+
+```
+python3 -m http.server --directory build/html
+```
