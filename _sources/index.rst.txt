@@ -3,18 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-darwinblog documentation
+Zhaocheng Che's Blog
 ========================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Hi, I'm Zhaocheng Che. This is my coding blog.
 
+Reach me at `chezhaocheng[AT]outlook.com`.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Posts
+   :maxdepth: 1
+   :caption: Blog
 
-   post1
-   post2
+   posts/graphql-dataloader
 

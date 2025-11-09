@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dataloader is Blocking &mdash; Zhaocheng Che&#39;s Blog 2025-11-09 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cbb73ba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Zhaocheng Che’s Blog" href="../index.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dataloader is Blocking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#graphql-library-in-elixir">GraphQL Library in Elixir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dataloader-in-absinthe">Dataloader in Absinthe</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#absinthe-resolution-model">Absinthe Resolution Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#absinthe-async-middleware">Absinthe Async Middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#discussion">Discussion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scenario-1-single-layer-database">Scenario 1: Single Layer Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scenario-2-remote-service">Scenario 2: Remote Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scenario-3-blended-duration">Scenario 3: Blended Duration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#random-thoughts">Random Thoughts</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Dataloader is Blocking</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/posts/graphql-dataloader.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="dataloader-is-blocking">
+<h1>Dataloader is Blocking<a class="headerlink" href="#dataloader-is-blocking" title="Link to this heading"></a></h1>
+<p>In short, the learning for me is</p>
+<ul class="simple">
+<li><p>Although Dataloader resolver requires async callback, it is blocking in execution.</p></li>
+<li><p>Dataloader is bestly used in the scenarios where IOs are quick</p></li>
+<li><p>When the query is CPU intensive, use <code class="docutils literal notranslate"><span class="pre">Async</span></code> to signficantly reduce the latency.</p></li>
+</ul>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading"></a></h2>
+<section id="graphql-library-in-elixir">
+<h3>GraphQL Library in Elixir<a class="headerlink" href="#graphql-library-in-elixir" title="Link to this heading"></a></h3>
+<p>Here’s a simple GraphQL schema definition</p>
+<div class="highlight-elixir notranslate"><div class="highlight"><pre><span></span><span class="n">object</span><span class="w"> </span><span class="ss">:game</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">field</span><span class="w"> </span><span class="ss">:teams</span><span class="p">,</span><span class="w"> </span><span class="n">list_of</span><span class="p">(</span><span class="ss">:team</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="n">resolve</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">game</span><span class="p">,</span><span class="w"> </span><span class="n">_args</span><span class="p">,</span><span class="w"> </span><span class="n">_ctx</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">      </span><span class="c1"># Query the details of the teams</span>
+<span class="w">      </span><span class="n">teams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io_request_teams</span><span class="p">(</span><span class="n">game</span><span class="o">.</span><span class="n">team_ids</span><span class="p">)</span>
+<span class="w">      </span><span class="p">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">teams</span><span class="p">}</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="w">  </span><span class="n">field</span><span class="w"> </span><span class="ss">:start_time</span><span class="p">,</span><span class="w"> </span><span class="ss">:datetime</span>
+<span class="k">end</span>
+
+<span class="n">object</span><span class="w"> </span><span class="ss">:team</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">field</span><span class="w"> </span><span class="ss">:name</span><span class="p">,</span><span class="w"> </span><span class="ss">:string</span>
+<span class="w">  </span><span class="n">field</span><span class="w"> </span><span class="ss">:standing</span><span class="p">,</span><span class="w"> </span><span class="ss">:string</span>
+<span class="k">end</span>
+
+<span class="n">query</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">field</span><span class="w"> </span><span class="ss">:games_query</span><span class="p">,</span><span class="w"> </span><span class="n">list_of</span><span class="p">(</span><span class="ss">:game</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="n">arg</span><span class="w"> </span><span class="ss">:date</span><span class="p">,</span><span class="w"> </span><span class="n">non_null</span><span class="p">(</span><span class="ss">:datetime</span><span class="p">)</span>
+<span class="w">    </span><span class="n">resolve</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="p">%{</span><span class="ss">date</span><span class="p">:</span><span class="w"> </span><span class="n">date</span><span class="p">},</span><span class="w"> </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">      </span><span class="c1"># Returns the games in this certain date</span>
+<span class="w">      </span><span class="n">games</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io_request_games</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+<span class="w">      </span><span class="p">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">games</span><span class="p">}</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</section>
+<section id="dataloader-in-absinthe">
+<h3>Dataloader in Absinthe<a class="headerlink" href="#dataloader-in-absinthe" title="Link to this heading"></a></h3>
+<p>Did you notice the problem in the example above?</p>
+<p>It can do N+1 query.</p>
+<p>So there’s the pattern called dataloader designed to solve this problem.</p>
+<div class="highlight-elixir notranslate"><div class="highlight"><pre><span></span><span class="n">object</span><span class="w"> </span><span class="ss">:game</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">field</span><span class="w"> </span><span class="ss">:teams</span><span class="p">,</span><span class="w"> </span><span class="n">list_of</span><span class="p">(</span><span class="ss">:team</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="n">resolve</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">game</span><span class="p">,</span><span class="w"> </span><span class="n">_args</span><span class="p">,</span><span class="w"> </span><span class="p">%{</span><span class="ss">loader</span><span class="p">:</span><span class="w"> </span><span class="n">loader</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_ctx</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">      </span><span class="c1"># Query the details of the teams</span>
+<span class="w">      </span><span class="c1">## Instead of blocking IO:</span>
+<span class="w">      </span><span class="c1">## teams = io_request_teams(game.team_ids)</span>
+<span class="w">      </span><span class="c1">## {:ok, teams}</span>
+<span class="w">      </span>
+<span class="w">      </span><span class="c1">## Perform the load and read in an async callback fasion</span>
+<span class="w">      </span><span class="n">loader</span>
+<span class="w">      </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Dataloader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nc">MyDataloader</span><span class="p">,</span><span class="w"> </span><span class="ss">:load_teams_by_game</span><span class="p">,</span><span class="w"> </span><span class="n">game</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="w">      </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">on_load</span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="n">loader</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">        </span><span class="n">teams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Dataloader</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nc">MyDataloader</span><span class="p">,</span><span class="w"> </span><span class="ss">:loader_name</span><span class="p">,</span><span class="w"> </span><span class="ss">:load_teams_by_game</span><span class="p">,</span><span class="w"> </span><span class="n">game</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+<span class="w">        </span><span class="p">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">teams</span><span class="p">}</span>
+<span class="w">      </span><span class="p">)</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>In another place, we need to define the function to handle <code class="docutils literal notranslate"><span class="pre">load_teams_by_game</span></code>.
+Here for simplicity, I am going to use the <code class="docutils literal notranslate"><span class="pre">Dataloader.KV</span></code>.</p>
+<div class="highlight-elixir notranslate"><div class="highlight"><pre><span></span><span class="na">@spec</span><span class="w"> </span><span class="n">load_teams_by_game</span><span class="p">(</span><span class="ss">:load_teams_by_game</span><span class="p">,</span><span class="w"> </span><span class="nc">MapSet</span><span class="o">.</span><span class="n">t</span><span class="p">())</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="n">map</span><span class="p">()</span>
+<span class="kd">def</span><span class="w"> </span><span class="n">load_teams_by_game</span><span class="p">(</span><span class="ss">:load_teams_by_game</span><span class="p">,</span><span class="w"> </span><span class="n">mapset_games</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="c1"># Here, the mapset_games are the deduplicated games passed in by `Dataloader.load()`</span>
+
+<span class="w">  </span><span class="n">team_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapset_games</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="w"> </span><span class="ni">&amp;1</span><span class="o">.</span><span class="n">team_ids</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">List</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="w">  </span><span class="n">teams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io_bulk_fetch_teams</span><span class="p">(</span><span class="n">team_ids</span><span class="p">)</span>
+<span class="w">  </span><span class="n">teams_by_game_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+<span class="w">    </span><span class="n">mapset_games</span><span class="p">,</span>
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="n">game</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">game</span><span class="p">,</span>
+<span class="w">      </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">game</span><span class="o">.</span><span class="n">team_ids</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">teams</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p">))</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">reject</span><span class="p">(</span><span class="o">&amp;</span><span class="n">is_nil</span><span class="o">/</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">)</span>
+
+<span class="w">  </span><span class="n">teams_by_game_id</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="absinthe-resolution-model">
+<h2>Absinthe Resolution Model<a class="headerlink" href="#absinthe-resolution-model" title="Link to this heading"></a></h2>
+<p>Here are two graphs illustrating the <em>order</em> of the resolvers in Absinthe resolution model.
+The left one is without Dataloader, the right one is with Dataloader.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><img alt="Left image" src="../_images/absinthe_resolution_naive.drawio.png" /></p></th>
+<th class="head text-center"><p><img alt="Right image" src="../_images/absinthe_resolution_dataloader.drawio.png" /></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><em>Without Dataloader</em></p></td>
+<td class="text-center"><p><em>Dataloaded Teams</em></p></td>
+</tr>
+</tbody>
+</table>
+<p>In all cases, the resolvers are evaluated sequentially inside the request thread.
+So if the resolver includes IO operations, such as database, redis, or another service, those IO operations are blocking.
+For example, if there’s 10 fields inside an object, only 1 is IO blocking. If this blocking field is resolved first, then even though the rest 9 fields are ready to be resolved, the CPU must wait until the first field finishes.</p>
+<p>In the Dataloader example, when the <code class="docutils literal notranslate"><span class="pre">Game.teams</span></code> field is encountered, the resolver returns immediately but this field is marked as suspended, and Absinthe continues to resolve other fields.
+After all regular fields are finished, Absinthe allows Dataloader to run any pending queries, which includes this <code class="docutils literal notranslate"><span class="pre">load_teams_by_game</span></code> for team 1,2,3 of game 1,2.</p>
+<p><strong>Important</strong>: During the Dataloader’s IO operation, Absinthe Resolution thread waits on the Dataloader’s tasks. Dataloader is <strong>BLOCKING</strong>.</p>
+<p>This makes sense because absinthe already resolved those regular fields, at this time, there’s no work available.</p>
+<section id="absinthe-async-middleware">
+<h3>Absinthe Async Middleware<a class="headerlink" href="#absinthe-async-middleware" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://hexdocs.pm/absinthe/Absinthe.Middleware.Async.html">https://hexdocs.pm/absinthe/Absinthe.Middleware.Async.html</a></p>
+<div class="highlight-elixir notranslate"><div class="highlight"><pre><span></span><span class="n">object</span><span class="w"> </span><span class="ss">:game</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">field</span><span class="w"> </span><span class="ss">:teams</span><span class="p">,</span><span class="w"> </span><span class="n">list_of</span><span class="p">(</span><span class="ss">:team</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="n">resolve</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="n">game</span><span class="p">,</span><span class="w"> </span><span class="n">_args</span><span class="p">,</span><span class="w"> </span><span class="n">_ctx</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">      </span><span class="c1"># Wrap the code inside an async task</span>
+<span class="w">      </span><span class="n">task</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="o">-&gt;</span>
+<span class="w">        </span><span class="n">teams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io_request_teams</span><span class="p">(</span><span class="n">game</span><span class="o">.</span><span class="n">team_ids</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">teams</span><span class="p">}</span>
+<span class="w">      </span><span class="p">)</span>
+
+<span class="w">      </span><span class="p">{</span><span class="ss">:middleware</span><span class="p">,</span><span class="w"> </span><span class="nc">Elixir.Absinthe.Middleware.Async</span><span class="p">,</span><span class="w"> </span><span class="n">task</span><span class="p">}</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>This is real nonblocking IO. Here’s the execution timing graph (compared to dataloader)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><img alt="Left image" src="../_images/absinthe_resolution_async.drawio.png" /></p></th>
+<th class="head text-center"><p><img alt="Right image" src="../_images/absinthe_resolution_dataloader.drawio.png" /></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><em>Async</em></p></td>
+<td class="text-center"><p><em>Dataloader</em></p></td>
+</tr>
+</tbody>
+</table>
+<p>This is real async because while the IO task for <code class="docutils literal notranslate"><span class="pre">game1.teams</span></code> is executing, the Absinthe resolution thread can resolve the rest of fields (<code class="docutils literal notranslate"><span class="pre">game2.start_time</span></code> and <code class="docutils literal notranslate"><span class="pre">game2.teams</span></code>) in parallel.</p>
+</section>
+</section>
+<section id="discussion">
+<h2>Discussion<a class="headerlink" href="#discussion" title="Link to this heading"></a></h2>
+<p>I would like to do thought experiment in a few cases to see the comparison between async and dataloader.</p>
+<section id="scenario-1-single-layer-database">
+<h3>Scenario 1: Single Layer Database<a class="headerlink" href="#scenario-1-single-layer-database" title="Link to this heading"></a></h3>
+<p>Suppose the GraphQL Object is this</p>
+<div class="highlight-elixir notranslate"><div class="highlight"><pre><span></span><span class="n">games</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">teams</span><span class="w">   </span><span class="c1"># read from database</span>
+<span class="w">  </span><span class="n">scores</span><span class="w">  </span><span class="c1"># read from database</span>
+<span class="w">  </span><span class="n">season</span><span class="w">  </span><span class="c1"># read from database</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dataloader (Suppose each db read is 5ms):
+I didn’t mention previously, but all dataloader functions are executed in parallel when the
+Absinthe Execution Thread is waiting for all of them.
+So the SQL for teams, scores, and seasons will be executed in parallel.
+So the total blocking time is 5ms. Having non-IO fields in <code class="docutils literal notranslate"><span class="pre">games</span></code> won’t change this result.</p>
+<p>Async (Suppose each db read is 3ms):
+The total blocking time is 3ms. In approximation, all of the db reads are issued at the same time,
+and finish around the same time. The downside is that <span class="math notranslate nohighlight">\(3 * games\)</span> queries are issued.
+If there are some other non-IO fields in <code class="docutils literal notranslate"><span class="pre">games</span></code>, then those execution time can overlap with the 3ms,
+and even reduce the blocking time.</p>
+</section>
+<section id="scenario-2-remote-service">
+<h3>Scenario 2: Remote Service<a class="headerlink" href="#scenario-2-remote-service" title="Link to this heading"></a></h3>
+<p>Suppose the fields are served by a remote service which is more expensive to call</p>
+<div class="highlight-elixir notranslate"><div class="highlight"><pre><span></span><span class="n">games</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">teams</span><span class="w">   </span><span class="c1"># remote service</span>
+<span class="w">  </span><span class="n">scores</span><span class="w">  </span><span class="c1"># remote service</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dataloader (Suppose the batched request takes <span class="math notranslate nohighlight">\(3 * games + 20\)</span> ms):
+Similar to Scenario 1, the total blocking time is <span class="math notranslate nohighlight">\(3 * games + 20\)</span> ms.</p>
+<p>Async (Each request takes 23ms):
+Similar to Scenario 1, the total blocking time is only 23ms and need to minus any additional non-IO fields in <code class="docutils literal notranslate"><span class="pre">games</span></code>.</p>
+</section>
+<section id="scenario-3-blended-duration">
+<h3>Scenario 3: Blended Duration<a class="headerlink" href="#scenario-3-blended-duration" title="Link to this heading"></a></h3>
+<div class="highlight-elixir notranslate"><div class="highlight"><pre><span></span><span class="n">games</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">teams</span><span class="w">   </span><span class="c1"># 3 * games + 20ms</span>
+<span class="w">  </span><span class="n">scores</span><span class="w">  </span><span class="c1"># constant 5ms</span>
+<span class="w">  </span><span class="n">static_field_1</span><span class="w">    </span><span class="c1"># only CPU is needed, 0.5ms</span>
+<span class="w">  </span><span class="n">...</span>
+<span class="w">  </span><span class="n">static_field_20</span><span class="w">   </span><span class="c1"># only CPU is needed</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Dataloader: The total blocking time is <span class="math notranslate nohighlight">\(3 * games + 25\)</span> ms.</p>
+<p>Async: The total blocking time is <span class="math notranslate nohighlight">\(23 + 5 - 10 = 18\)</span> ms in the ideal case.</p>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Dataloader has an almost constant blocking duration (regardless of the number of games),
+however, this duration is almost always beaten by Async,
+because of those CPU-only fields under the same parent.
+The more CPU-only fields, the more parallelization <code class="docutils literal notranslate"><span class="pre">Async</span></code> achieves.
+So when the query is CPU intensive, use <code class="docutils literal notranslate"><span class="pre">Async</span></code> to signficantly reduce the latency.</p>
+<p>On the other hand, Dataloader solves N+1 query problem (just as its original purpose).
+However, because Dataloader is at its core BLOCKING,
+it is bestly used in the Database Scenario where IOs are so quick
+that having blocking IO isn’t a real issue.</p>
+<p>One importantly learning for me is this:</p>
+<blockquote>
+<div><p>Although Dataloader resolver requires async callback, it is blocking in execution.</p>
+</div></blockquote>
+</section>
+<section id="random-thoughts">
+<h2>Random Thoughts<a class="headerlink" href="#random-thoughts" title="Link to this heading"></a></h2>
+<p>Is it possible to combine the merits of Dataloader and Async?</p>
+<p>This is a naive thought.
+Because batching needs the information about the entire set of ids,
+so IO can only happen when the resolvers for all those batching fields are executed.
+However, without running the resolver on CPU and look at the result,
+there’s no method to predetermine if this resolver needs a batched query.</p>
+<p>What if Absinthe resolves the query with BFS instead of DFS?</p>
+<p>Suppose the query is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">games</span> <span class="p">{</span>
+  <span class="n">CPU_field_1</span>
+  <span class="n">CPU_field_2</span>
+  <span class="n">CPU_field_3</span>
+  <span class="n">IO_field_1</span>
+  <span class="n">IO_field_2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If we have 5 games object, currently Absinthe will resolve object by object in DFS.</p>
+<p>With BFS, we can resolve the <code class="docutils literal notranslate"><span class="pre">IO_field_1</span></code> of all object, kick start the Dataloader,
+let it run in the background, and resolve the <code class="docutils literal notranslate"><span class="pre">IO_field_2</span></code> of all object,
+start another Dataloader task. And then resolve those CPU fields.
+After that, wait until the IO is finished, then do the callbacks.</p>
+<p>In addition to BFS execution, Absinthe also needs the programmer to manually
+mark which are the IO fields, so that they are resolved before the CPU fields
+to maximize parallelization.</p>
+<p>Just a naive thought, any discussion is welcome to my email!!!</p>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Zhaocheng Che’s Blog" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
