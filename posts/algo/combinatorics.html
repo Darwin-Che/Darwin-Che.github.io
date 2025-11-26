@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Combinatorics Algorithms &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Data Structures" href="data_struc.html" />
+    <link rel="prev" title="Algebra Algorithms" href="algebra.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Tech Posts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Algorithms</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algebra.html">Algebra Algorithms</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Combinatorics Algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#finding-power-of-factorial-divisor">Finding Power of Factorial Divisor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binomial-coefficients">Binomial Coefficients</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation">Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#computing-binomial-coefficients-modulo-m">Computing binomial coefficients modulo <em>m</em></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#catalan-numbers">Catalan Numbers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#application-in-some-combinatorial-problems">Application in some combinatorial problems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculations">Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#the-inclusion-exclusion-principle">The Inclusion-Exclusion Principle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data_struc.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dp.html">DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geo_1.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph.html">Graph Algo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html">Linear Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mono_queue.html">Monotonic Queue and similar ideas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="string.html">String Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Algorithms</a></li>
+      <li class="breadcrumb-item active">Combinatorics Algorithms</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/algo/combinatorics.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="combinatorics-algorithms">
+<h1>Combinatorics Algorithms<a class="headerlink" href="#combinatorics-algorithms" title="Link to this heading"></a></h1>
+<section id="finding-power-of-factorial-divisor">
+<h2>Finding Power of Factorial Divisor<a class="headerlink" href="#finding-power-of-factorial-divisor" title="Link to this heading"></a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fact_pow</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">n</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+<span class="w">        </span><span class="n">res</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="binomial-coefficients">
+<h2>Binomial Coefficients<a class="headerlink" href="#binomial-coefficients" title="Link to this heading"></a></h2>
+<section id="calculation">
+<h3>Calculation<a class="headerlink" href="#calculation" title="Link to this heading"></a></h3>
+<div class="math notranslate nohighlight">
+\[
+\binom{n}{k} = \frac{n!}{k!(n-k)!}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}
+\]</div>
+</section>
+<section id="properties">
+<h3>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h3>
+<div class="math notranslate nohighlight">
+\[
+\binom{n}{k} = \binom{n}{n-k}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\binom{n}{k} = \frac{n}{k} \binom{n-1}{k-1}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\sum_{k=0}^n \binom{n}{k} = 2^n
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\sum_{m=0}^n \binom{m}{k} = \binom{n+1}{k+1}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\sum_{k=0}^m \binom{n+k}{k} = \binom{n+m+1}{m}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\binom{n}{0}^2 + \binom{n}{1}^2 + ... + \binom{n}{n}^2 = \binom{2n}{n}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+1\binom{n}{1}+2\binom{n}{2}+...+n\binom{n}{n} = n2^{n-1}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\binom{n}{0} + \binom{n-1}{1} + \binom{n-2}{2} + ... + \binom{0}{n} = F_{n+1}
+\]</div>
+</section>
+<section id="id1">
+<h3>Calculation<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<section id="straightforward-calculation-using-analytical-formula">
+<h4>Straightforward calculation using analytical formula<a class="headerlink" href="#straightforward-calculation-using-analytical-formula" title="Link to this heading"></a></h4>
+<p>The first, straightforward formula is very easy to code, but this method is likely to overflow even for relatively small values of <em>n</em> and <em>k</em> (even if the answer completely fit into some datatype, the calculation  of the intermediate factorials can lead to overflow). Therefore, this  method often can only be used with <a class="reference external" href="https://cp-algorithms.com/algebra/big-integer.html">long arithmetic</a>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">C</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">        </span><span class="n">res</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">        </span><span class="n">res</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="improved-implementation">
+<h4>Improved implementation<a class="headerlink" href="#improved-implementation" title="Link to this heading"></a></h4>
+<p>Note that in the above implementation numerator and denominator have the same number of factors (<em>k</em>), each of which is greater than or equal to 1. Therefore, we can replace our fraction with a product <em>k</em> fractions, each of which is real-valued. However, on each step after  multiplying current answer by each of the next fractions the answer will still be integer (this follows from the property of factoring in). C++  implementation:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">C</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">        </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">res</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here we carefully cast the floating point number to an integer, taking  into account that due to the accumulated errors, it may be slightly less than the true value (for example, 2.99999 instead of 3).</p>
+</section>
+<section id="pascal-s-triangle">
+<h4>Pascal’s Triangle<a class="headerlink" href="#pascal-s-triangle" title="Link to this heading"></a></h4>
+<p>By using the recurrence relation we can construct a table of binomial  coefficients (Pascal’s triangle) and take the result from it. The  advantage of this method is that intermediate results never exceed the  answer and calculating each new table element requires only one  addition. The flaw is slow execution for large <em>n</em> and <em>k</em> if you just need a single value and not the whole table. <span class="math notranslate nohighlight">\(O(n^2)\)</span></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">maxn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">maxn</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">][</span><span class="n">maxn</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">maxn</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">C</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">k</span><span class="p">)</span>
+<span class="w">        </span><span class="n">C</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">][</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">][</span><span class="n">k</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the entire table of values is not necessary, storing only two last rows of it is sufficient (current <em>n</em>-th row and the previous <em>n</em>−1-th).</p>
+</section>
+<section id="calculation-in-o-1">
+<h4>Calculation in <em>O</em>(1)<a class="headerlink" href="#calculation-in-o-1" title="Link to this heading"></a></h4>
+<p>Finally, in some situations it is beneficial to precompute all the  factorials in order to produce any necessary binomial coefficient with  only two divisions later. This can be advantageous when using <a class="reference external" href="https://cp-algorithms.com/algebra/big-integer.html">long arithmetic</a>, when the memory does not allow precomputation of the whole Pascal’s triangle.</p>
+</section>
+</section>
+<section id="computing-binomial-coefficients-modulo-m">
+<h3>Computing binomial coefficients modulo <em>m</em><a class="headerlink" href="#computing-binomial-coefficients-modulo-m" title="Link to this heading"></a></h3>
+<section id="binomial-coefficient-for-small-n">
+<h4>Binomial coefficient for small <em>n</em><a class="headerlink" href="#binomial-coefficient-for-small-n" title="Link to this heading"></a></h4>
+<p>Pascal’s triangle <span class="math notranslate nohighlight">\(O(n^2)\)</span></p>
+</section>
+<section id="binomial-coefficient-modulo-large-prime-m">
+<h4>Binomial coefficient modulo large prime m<a class="headerlink" href="#binomial-coefficient-modulo-large-prime-m" title="Link to this heading"></a></h4>
+<div class="math notranslate nohighlight">
+\[
+\binom{n}{k} \equiv n! \cdot (k!)^{-1} \cdot ((n-k)!)^{-1} \pmod m
+\]</div>
+<p>First we precompute all factorials modulo <em>m</em> up to MAXN! in <em>O</em>(MAXN) time.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">factorial</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">MAXN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">factorial</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factorial</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And afterwards we can compute the binomial coefficient in <em>O</em>(log<em>m</em>) time.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">binomial_coefficient</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">factorial</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">inverse</span><span class="p">(</span><span class="n">factorial</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">factorial</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We even can compute the binomial coefficient in <em>O</em>(1) time if we precompute the inverses of all factorials in <em>O</em>(MAXNlog<em>m</em>) using the regular method for computing the inverse, or even in <em>O</em>(MAXN) time using the congruence (<em>x</em>!)−1≡((<em>x</em>−1)!)−1⋅<em>x</em>−1 and the method for <a class="reference external" href="https://cp-algorithms.com/algebra/module-inverse.html#mod-inv-all-num">computing all inverses</a> in <em>O</em>(<em>n</em>).</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">binomial_coefficient</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">factorial</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">inverse_factorial</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">inverse_factorial</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="binomial-coefficient-modulo-prime-power-mod-prime-pow">
+<h4>Binomial coefficient modulo prime power  {#mod-prime-pow}<a class="headerlink" href="#binomial-coefficient-modulo-prime-power-mod-prime-pow" title="Link to this heading"></a></h4>
+<p>Here we want to compute the binomial coefficient modulo some prime power, i.e. <span class="math notranslate nohighlight">\(m = p^b\)</span> for some prime <em>p</em>.</p>
+<p>If <span class="math notranslate nohighlight">\(p &gt; \max(k, n-k)\)</span>, then we can use the same method in previous section. But otherwise, at least one of <span class="math notranslate nohighlight">\(k!\)</span> and <span class="math notranslate nohighlight">\((n-k)!\)</span> is not coprime with <span class="math notranslate nohighlight">\(m\)</span>. and therefore we cannot compute the inverses. Nevertheless we can compute the binomial coefficient.</p>
+<p>The idea is the following: We compute for each <span class="math notranslate nohighlight">\(x!\)</span> the biggest exponent <em>c</em> such that <span class="math notranslate nohighlight">\(p^c\)</span> divides <em>x</em>!, i.e. <span class="math notranslate nohighlight">\(p^c | x!\)</span>. Let <span class="math notranslate nohighlight">\(c(x)\)</span> be that number. And let <span class="math notranslate nohighlight">\(g(x) = \frac{x!}{p^c}\)</span>. Then we can write the binomial coefficient as:
+$<span class="math notranslate nohighlight">\(
+\binom{n}{k} = \frac{g(n)p^{c(n)}}{g(k)p^{c(k)}g(n-k)p^{c(n-k)}} = \frac{g(n)}{g(k)g(n-k)}p^{c(n)-c(k)-c(n-k)}
+\)</span>$
+The interesting thing is, that <em>g</em>(<em>x</em>) is now free from the prime divisor <em>p</em>. Therefore <em>g</em>(<em>x</em>) is coprime to m, and we can compute the modular inverses of <em>g</em>(<em>k</em>) and <em>g</em>(<em>n</em>−<em>k</em>).</p>
+<p>After precomputing all values for <em>g</em> and <em>c</em>, which can be done efficiently using dynamic programming in <em></em>(<em>n</em>), we can compute the binomial coefficient in <em>O</em>(log<em>m</em>) time. Or precompute all inverses and all powers of <em>p</em>, and then compute the binomial coefficient in <em>O</em>(1).</p>
+<p>Notice, if <em>c</em>(<em>n</em>)−<em>c</em>(<em>k</em>)−<em>c</em>(<em>n</em>−<em>k</em>)≥<em>b</em>, than <em>p**b</em> | <em>p**c</em>(<em>n</em>)−<em>c</em>(<em>k</em>)−<em>c</em>(<em>n</em>−<em>k</em>), and the binomial coefficient is 0.</p>
+</section>
+<section id="binomial-coefficient-modulo-an-arbitrary-number">
+<h4>Binomial coefficient modulo an arbitrary number<a class="headerlink" href="#binomial-coefficient-modulo-an-arbitrary-number" title="Link to this heading"></a></h4>
+<p>Apply chinese remainder theorem on previous section</p>
+</section>
+<section id="binomial-coefficient-for-large-n-and-small-modulo">
+<h4>Binomial coefficient for large <em>n</em> and small modulo<a class="headerlink" href="#binomial-coefficient-for-large-n-and-small-modulo" title="Link to this heading"></a></h4>
+<p>don’t understand</p>
+</section>
+</section>
+</section>
+<section id="catalan-numbers">
+<h2>Catalan Numbers<a class="headerlink" href="#catalan-numbers" title="Link to this heading"></a></h2>
+<section id="application-in-some-combinatorial-problems">
+<h3>Application in some combinatorial problems<a class="headerlink" href="#application-in-some-combinatorial-problems" title="Link to this heading"></a></h3>
+<p>The Catalan number <span class="math notranslate nohighlight">\(C_n\)</span> is the solution for</p>
+<ul class="simple">
+<li><p>Number of correct bracket sequence consisting of <em>n</em> opening and <em>n</em> closing brackets.</p></li>
+<li><p>The number of rooted full binary trees with <em>n</em>+1 leaves (vertices are not numbered). A rooted binary tree is full if every vertex has either two children or no children.</p></li>
+<li><p>The number of ways to completely parenthesize <em>n</em>+1 factors.</p></li>
+<li><p>The number of triangulations of a convex polygon with <em>n</em>+2 sides (i.e. the number of partitions of polygon into disjoint triangles by using the diagonals).</p></li>
+<li><p>The number of ways to connect the 2<em>n</em> points on a circle to form <em>n</em> disjoint chords.</p></li>
+<li><p>The number of <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_isomorphism">non-isomorphic</a> full binary trees with <em>n</em> internal nodes (i.e. nodes having at least one son).</p></li>
+<li><p>The number of monotonic lattice paths from point (0,0) to point (<em>n</em>,<em>n</em>) in a square lattice of size <em>n</em>×<em>n</em>, which do not pass above the main diagonal (i.e. connecting (0,0) to (<em>n</em>,<em>n</em>)).</p></li>
+<li><p>Number of permutations of length <em>n</em> that can be <a class="reference external" href="https://en.wikipedia.org/wiki/Stack-sortable_permutation">stack sorted</a> (i.e. it can be shown that the rearrangement is stack sorted if and only if there is no such index <em>i</em>&lt;<em>j</em>&lt;<em>k</em>, such that <em>a**k</em>&lt;<em>a**i</em>&lt;<em>a**j</em> ).</p></li>
+<li><p>The number of <a class="reference external" href="https://en.wikipedia.org/wiki/Noncrossing_partition">non-crossing partitions</a> of a set of <em>n</em> elements.</p></li>
+<li><p>The number of ways to cover the ladder 1…<em>n</em> using <em>n</em> rectangles (The ladder consists of <em>n</em> columns, where <em>i<strong>t</strong>h</em> column has a height <em>i</em>).</p></li>
+</ul>
+</section>
+<section id="calculations">
+<h3>Calculations<a class="headerlink" href="#calculations" title="Link to this heading"></a></h3>
+<p>There are two formulas for the Catalan numbers: <strong>Recursive and Analytical</strong>. Since, we believe that all the mentioned above problems are equivalent  (have the same solution), for the proof of the formulas below we will  choose the task which it is easiest to do.</p>
+<section id="recursive-formula">
+<h4>Recursive formula<a class="headerlink" href="#recursive-formula" title="Link to this heading"></a></h4>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+C_0 = C_1 = 1 \\
+C_n = \sum_{k=0}^{n-1}C_kC_{n-1-k}
+\end{split}\]</div>
+<p>The recurrence formula can be easily deduced from the problem of the correct bracket sequence.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">....</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">....</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">catalan</span><span class="p">[</span><span class="n">MAX</span><span class="p">];</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">init</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">catalan</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">catalan</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">catalan</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">catalan</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">catalan</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">catalan</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="mi">-1</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">MOD</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">catalan</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MOD</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">catalan</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">MOD</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="analytical-formula">
+<h4>Analytical formula<a class="headerlink" href="#analytical-formula" title="Link to this heading"></a></h4>
+<div class="math notranslate nohighlight">
+\[
+C_n = \frac{1}{n+1}\binom{2n}{n}
+\]</div>
+<p>The above formula can be easily concluded from the problem of the monotonic paths in square grid.</p>
+</section>
+</section>
+</section>
+<section id="the-inclusion-exclusion-principle">
+<h2>The Inclusion-Exclusion Principle<a class="headerlink" href="#the-inclusion-exclusion-principle" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+      Previous:
+    
+    <a href="../tech/notes_c.html">
+      
+      <span>C language Notes</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+      Next: 
+    <a href="dp.html">
+      <span>DP</span>
+      
+    </a>
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="algebra.html" class="btn btn-neutral float-left" title="Algebra Algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data_struc.html" class="btn btn-neutral float-right" title="Data Structures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

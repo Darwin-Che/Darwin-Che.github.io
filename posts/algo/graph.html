@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graph Algo &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Linear Algebra Algorithms" href="linalg.html" />
+    <link rel="prev" title="Geometry" href="geo_1.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Tech Posts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Algorithms</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algebra.html">Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics.html">Combinatorics Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_struc.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dp.html">DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geo_1.html">Geometry</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Graph Algo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bfs-dfs">BFS / DFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dfs-disconnected">DFS Disconnected</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#topoligical-sort">Topoligical Sort</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modification-of-dfs-for-disconnected">Modification of DFS for disconnected</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kahns-algorithm">Kahn’s algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#floyd-cycle-detection">Floyd cycle detection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html">Linear Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mono_queue.html">Monotonic Queue and similar ideas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="string.html">String Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Algorithms</a></li>
+      <li class="breadcrumb-item active">Graph Algo</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/algo/graph.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="graph-algo">
+<h1>Graph Algo<a class="headerlink" href="#graph-algo" title="Link to this heading"></a></h1>
+<section id="bfs-dfs">
+<h2>BFS / DFS<a class="headerlink" href="#bfs-dfs" title="Link to this heading"></a></h2>
+<p>For DFS, exists recursive approach (use a boolean array to store the visited nodes to avoid cycles), think about how to adjust for disconnected graph</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">DFS</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">it</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">it</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="o">*</span><span class="n">it</span><span class="p">])</span><span class="w"> </span><span class="n">DFS</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For BFS, use iterative approach by applying queue/list</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">BFS</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="kt">bool</span><span class="w"> </span><span class="n">visited</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">bool</span><span class="p">[</span><span class="n">V</span><span class="p">];</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">V</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">queue</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">  </span><span class="n">queue</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="w">  </span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">it</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queue</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">queue</span><span class="p">.</span><span class="n">pop_front</span><span class="p">();</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">it</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="o">*</span><span class="n">it</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">visited</span><span class="p">[</span><span class="o">*</span><span class="n">it</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="n">queue</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>What about DFS iterative approach? just use the back of the list every time.</p>
+<section id="dfs-disconnected">
+<h3>DFS Disconnected<a class="headerlink" href="#dfs-disconnected" title="Link to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">Graph::DFSUtil</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Mark the current node as visited and print it</span>
+<span class="w">    </span><span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Recur for all the vertices adjacent to this vertex</span>
+<span class="w">    </span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="o">*</span><span class="n">i</span><span class="p">])</span>
+<span class="w">            </span><span class="n">DFSUtil</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="w"> </span>
+<span class="c1">// The function to do DFS traversal. It uses recursive</span>
+<span class="c1">// DFSUtil()</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Graph::DFS</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Call the recursive helper function to print DFS</span>
+<span class="w">    </span><span class="c1">// traversal starting from all vertices one by one</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="o">:</span><span class="n">adj</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">.</span><span class="n">first</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span>
+<span class="w">            </span><span class="n">DFSUtil</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">first</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="topoligical-sort">
+<h2>Topoligical Sort<a class="headerlink" href="#topoligical-sort" title="Link to this heading"></a></h2>
+<p>Topological sorting for Directed Acyclic Graph (DAG) is a linear  ordering of vertices such that for every directed edge u v, vertex u  comes before v in the ordering.  (There can be multiple valid orders)</p>
+<section id="modification-of-dfs-for-disconnected">
+<h3>Modification of DFS for disconnected<a class="headerlink" href="#modification-of-dfs-for-disconnected" title="Link to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// A recursive function used by topologicalSort</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Graph::topologicalSortUtil</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">visited</span><span class="p">[],</span>
+<span class="w">                                </span><span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">Stack</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Mark the current node as visited.</span>
+<span class="w">    </span><span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Recur for all the vertices</span>
+<span class="w">    </span><span class="c1">// adjacent to this vertex</span>
+<span class="w">    </span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="o">*</span><span class="n">i</span><span class="p">])</span>
+<span class="w">            </span><span class="n">topologicalSortUtil</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">visited</span><span class="p">,</span><span class="w"> </span><span class="n">Stack</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Push current vertex to stack</span>
+<span class="w">    </span><span class="c1">// which stores result</span>
+<span class="w">    </span><span class="n">Stack</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="w"> </span>
+<span class="c1">// The function to do Topological Sort.</span>
+<span class="c1">// It uses recursive topologicalSortUtil()</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Graph::topologicalSort</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Stack</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Mark all the vertices as not visited</span>
+<span class="w">    </span><span class="kt">bool</span><span class="o">*</span><span class="w"> </span><span class="n">visited</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">bool</span><span class="p">[</span><span class="n">V</span><span class="p">];</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">V</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Call the recursive helper function</span>
+<span class="w">    </span><span class="c1">// to store Topological</span>
+<span class="w">    </span><span class="c1">// Sort starting from all</span>
+<span class="w">    </span><span class="c1">// vertices one by one</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">V</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span>
+<span class="w">            </span><span class="n">topologicalSortUtil</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">visited</span><span class="p">,</span><span class="w"> </span><span class="n">Stack</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Print contents of stack</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">Stack</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Stack</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">Stack</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="kahns-algorithm">
+<h3>Kahn’s algorithm<a class="headerlink" href="#kahns-algorithm" title="Link to this heading"></a></h3>
+<p>This is iterative algorithm but has same time/space vs DFS</p>
+<p><strong>Algorithm:</strong> Steps involved in finding the topological ordering of a DAG:</p>
+<p><strong>Step-1:</strong> Compute in-degree (number of incoming edges) for each of the vertex  present in the DAG and initialize the count of visited nodes as 0.</p>
+<p><strong>Step-2:</strong> Pick all the vertices with in-degree as 0 and add them into a queue (Enqueue operation)</p>
+<p><strong>Step-3:</strong> Remove a vertex from the queue (Dequeue operation) and then.</p>
+<ol class="arabic simple">
+<li><p>Increment count of visited nodes by 1.</p></li>
+<li><p>Decrease in-degree by 1 for all its neighboring nodes.</p></li>
+<li><p>If in-degree of a neighboring nodes is reduced to zero, then add it to the queue.</p></li>
+</ol>
+<p><strong>Step 4:</strong> Repeat Step 3 until the queue is empty.</p>
+<p><strong>Step 5:</strong> If count of visited nodes is <strong>not</strong> equal to the number of nodes in the graph then the topological sort is not possible for the given graph.</p>
+<p><strong>How to find in-degree of each node?</strong>
+There are 2 ways to calculate in-degree of every vertex:</p>
+<ol class="arabic">
+<li><p>Take an in-degree array which will keep track of</p>
+<p>Traverse the array of edges and simply increase the counter of the destination node by 1.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Nodes</span>
+<span class="w">    </span><span class="n">indegree</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">edge</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">dest</span><span class="p">)</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Edges</span>
+<span class="w">    </span><span class="n">indegree</span><span class="p">[</span><span class="n">dest</span><span class="p">]</span><span class="o">++</span>
+</pre></div>
+</div>
+<p>Time Complexity: O(V+E)</p>
+</li>
+<li><p>Traverse the list for every node and then increment the in-degree of all the nodes connected to it by 1.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Nodes</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">size</span><span class="p">()</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">then</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">dest</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">list</span>
+<span class="w">            </span><span class="n">indegree</span><span class="p">[</span><span class="n">dest</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Time Complexity: The outer for  loop will be executed V number of times and the inner for loop will be  executed E number of times, Thus overall time complexity is O(V+E).</p>
+<p>The overall time complexity of the algorithm is O(V+E)</p>
+</li>
+</ol>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">Graph::topologicalSort</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Create a vector to store</span>
+<span class="w">    </span><span class="c1">// indegrees of all</span>
+<span class="w">    </span><span class="c1">// vertices. Initialize all</span>
+<span class="w">    </span><span class="c1">// indegrees as 0.</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">in_degree</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// Traverse adjacency lists</span>
+<span class="w">    </span><span class="c1">// to fill indegrees of</span>
+<span class="w">    </span><span class="c1">// vertices.  This step</span>
+<span class="w">    </span><span class="c1">// takes O(V+E) time</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">V</span><span class="p">;</span><span class="w"> </span><span class="n">u</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">itr</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">itr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">begin</span><span class="p">();</span>
+<span class="w">             </span><span class="n">itr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="n">itr</span><span class="o">++</span><span class="p">)</span>
+<span class="w">            </span><span class="n">in_degree</span><span class="p">[</span><span class="o">*</span><span class="n">itr</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// Create an queue and enqueue</span>
+<span class="w">    </span><span class="c1">// all vertices with indegree 0</span>
+<span class="w">    </span><span class="n">queue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">q</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">V</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">in_degree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// Initialize count of visited vertices</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// Create a vector to store</span>
+<span class="w">    </span><span class="c1">// result (A topological</span>
+<span class="w">    </span><span class="c1">// ordering of the vertices)</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">top_order</span><span class="p">;</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// One by one dequeue vertices</span>
+<span class="w">    </span><span class="c1">// from queue and enqueue</span>
+<span class="w">    </span><span class="c1">// adjacents if indegree of</span>
+<span class="w">    </span><span class="c1">// adjacent becomes 0</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Extract front of queue</span>
+<span class="w">        </span><span class="c1">// (or perform dequeue)</span>
+<span class="w">        </span><span class="c1">// and add it to topological order</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+<span class="w">        </span><span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">        </span><span class="n">top_order</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+<span class="w">  </span>
+<span class="w">        </span><span class="c1">// Iterate through all its</span>
+<span class="w">        </span><span class="c1">// neighbouring nodes</span>
+<span class="w">        </span><span class="c1">// of dequeued node u and</span>
+<span class="w">        </span><span class="c1">// decrease their in-degree</span>
+<span class="w">        </span><span class="c1">// by 1</span>
+<span class="w">        </span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">itr</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">itr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">begin</span><span class="p">();</span>
+<span class="w">             </span><span class="n">itr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="n">itr</span><span class="o">++</span><span class="p">)</span>
+<span class="w">  </span>
+<span class="w">            </span><span class="c1">// If in-degree becomes zero,</span>
+<span class="w">            </span><span class="c1">// add it to queue</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">--</span><span class="n">in_degree</span><span class="p">[</span><span class="o">*</span><span class="n">itr</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">                </span><span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">itr</span><span class="p">);</span>
+<span class="w">  </span>
+<span class="w">        </span><span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// Check if there was a cycle</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">V</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;There exists a cycle in the graph</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// Print topological order</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">top_order</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">top_order</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="floyd-cycle-detection">
+<h2>Floyd cycle detection<a class="headerlink" href="#floyd-cycle-detection" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+      Previous:
+    
+    <a href="geo_1.html">
+      
+      <span>Geometry</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+      Next: 
+    <a href="linalg.html">
+      <span>Linear Algebra Algorithms</span>
+      
+    </a>
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="geo_1.html" class="btn btn-neutral float-left" title="Geometry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="linalg.html" class="btn btn-neutral float-right" title="Linear Algebra Algorithms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

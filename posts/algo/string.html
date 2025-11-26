@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>String Processing &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Recap" href="../recap/index.html" />
+    <link rel="prev" title="Monotonic Queue and similar ideas" href="mono_queue.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Tech Posts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Algorithms</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algebra.html">Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics.html">Combinatorics Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_struc.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dp.html">DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geo_1.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph.html">Graph Algo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html">Linear Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mono_queue.html">Monotonic Queue and similar ideas</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">String Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#string-hashing">String Hashing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation-of-the-hash-of-a-string">Calculation of the hash of a string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-tasks">Example tasks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#applications-of-hashing">Applications of Hashing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#improve-no-collision-probability">Improve no-collision probability</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rabin-karp-algorithm-for-string-matching">Rabin-Karp Algorithm for string matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prefix-function-knuthmorrispratt-algorithm">Prefix function. Knuth–Morris–Pratt algorithm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prefix-function-definition">Prefix function definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trivial-algorithm">Trivial Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#efficient-algorithm">Efficient Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#applications">Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#z-function-and-its-calculation">Z-function and its calculation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Trivial algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#suffix-array">Suffix Array</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construction">Construction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#aho-corasick-algorithm">Aho-Corasick algorithm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construction-of-trie">Construction of Trie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construction-of-an-automaton">Construction of an automaton</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#application">Application</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#suffix-tree-ukkonen-s-algorithm">Suffix Tree. Ukkonen’s Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#suffix-automaton">Suffix Automaton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lyndon-factorization">Lyndon factorization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Algorithms</a></li>
+      <li class="breadcrumb-item active">String Processing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/algo/string.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="string-processing">
+<h1>String Processing<a class="headerlink" href="#string-processing" title="Link to this heading"></a></h1>
+<section id="string-hashing">
+<h2>String Hashing<a class="headerlink" href="#string-hashing" title="Link to this heading"></a></h2>
+<section id="calculation-of-the-hash-of-a-string">
+<h3>Calculation of the hash of a string<a class="headerlink" href="#calculation-of-the-hash-of-a-string" title="Link to this heading"></a></h3>
+<div class="math notranslate nohighlight">
+\[
+hash(s) = \sum_{i=0}^{n-1} s[i] \cdot p^i \mod m
+\]</div>
+<p>where <em>p</em> and <em>m</em> are some chosen, positive numbers. It is called a <strong>polynomial rolling hash function</strong>.</p>
+<p>It is reasonable to make <em>p</em> a prime number roughly equal to the number of characters in the input alphabet. For example, if the input is composed of only lowercase letters of the English alphabet, <em>p</em>=31 is a good choice. If the input may contain both uppercase and lowercase letters, then <em>p</em>=53 is a possible choice. The code in this article will use <em>p</em>=31.</p>
+<p>Obviously <em>m</em> should be a large number since the probability of two random strings colliding is about ≈1<em>m</em>. Sometimes <em>m</em>=264 is chosen, since then the integer overflows of 64-bit integers work exactly like the modulo operation. However, there exists a method, which generates colliding strings (which work independently from the choice of <em>p</em>). So in practice, <em>m</em>=264 is not recommended. A good choice for <em>m</em> is some large prime number. The code in this article will just use <em>m</em>=109+9. This is a large number, but still small enough so that we can perform multiplication of two values using 64-bit integers.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">compute_hash</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e9</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">hash_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">p_pow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">hash_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">hash_value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_pow</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="w">        </span><span class="n">p_pow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p_pow</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hash_value</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Precomputing the powers of <em>p</em> might give a performance boost.</p>
+</section>
+<section id="example-tasks">
+<h3>Example tasks<a class="headerlink" href="#example-tasks" title="Link to this heading"></a></h3>
+<section id="search-for-duplicate-strings-in-an-array-of-strings">
+<h4>Search for duplicate strings in an array of strings<a class="headerlink" href="#search-for-duplicate-strings-in-an-array-of-strings" title="Link to this heading"></a></h4>
+<p>Problem: Given a list of <em>n</em> strings <em>s**i</em>, each no longer than <em>m</em> characters, find all the duplicate strings and divide them into groups.</p>
+<p>From the obvious algorithm involving sorting the strings, we would get a time complexity of <em>O</em>(<em>n**m</em>log<em>n</em>) where the sorting requires <em>O</em>(<em>n</em>log<em>n</em>) comparisons and each comparison take <em>O</em>(<em>m</em>) time. However, by using hashes, we reduce the comparison time to <em>O</em>(1), giving us an algorithm that runs in <em>O</em>(<em>n**m</em>+<em>n</em>log<em>n</em>) time.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">group_identical_strings</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">hashes</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">hashes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">compute_hash</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="w"> </span><span class="n">i</span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">sort</span><span class="p">(</span><span class="n">hashes</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">hashes</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">groups</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">hashes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">hashes</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">].</span><span class="n">first</span><span class="p">)</span>
+<span class="w">            </span><span class="n">groups</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+<span class="w">        </span><span class="n">groups</span><span class="p">.</span><span class="n">back</span><span class="p">().</span><span class="n">push_back</span><span class="p">(</span><span class="n">hashes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">groups</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fast-hash-calculation-of-substrings-of-given-string">
+<h4>Fast hash calculation of substrings of given string<a class="headerlink" href="#fast-hash-calculation-of-substrings-of-given-string" title="Link to this heading"></a></h4>
+<p>Problem: Given a string <em>s</em> and indices <em>i</em> and <em>j</em>, find the hash of the substring <em>s</em>[<em>i</em>…<em>j</em>].
+$<span class="math notranslate nohighlight">\(
+p^i \cdot hash(i,j) = hash(0,j) - hash(0,i-1)
+\)</span>$
+So by knowing the hash value of each prefix of the string <em>s</em>, we can compute the hash of any substring directly using this formula. The only problem that we face in calculating it is that we must be able to divide hash(<em>s</em>[0…<em>j</em>])−hash(<em>s</em>[0…<em>i</em>−1]) by <em>p**i</em>. Therefore we need to find the <a class="reference external" href="https://cp-algorithms.com/algebra/module-inverse.html">modular multiplicative inverse</a> of <em>p**i</em> and then perform multiplication with this inverse. We can precompute the inverse of every <em>p**i</em>, which allows computing the hash of any substring of <em>s</em> in <em>O</em>(1) time.</p>
+<p>However, there does exist an easier way. In most cases, rather than calculating the hashes of substring exactly,  it is enough to compute the hash multiplied by some power of <em>p</em>. Suppose we have two hashes of two substrings, one multiplied by <em>p**i</em> and the other by <em>p**j</em>. If <em>i</em>&lt;<em>j</em> then we multiply the first hash by <em>p**j</em>−<em>i</em>, otherwise, we multiply the second hash by <em>p**i</em>−<em>j</em>. By doing this, we get both the hashes multiplied by the same power of <em>p</em> (which is the maximum of <em>i</em> and <em>j</em>) and now these hashes can be compared easily with no need for any division.</p>
+</section>
+</section>
+<section id="applications-of-hashing">
+<h3>Applications of Hashing<a class="headerlink" href="#applications-of-hashing" title="Link to this heading"></a></h3>
+<p>Here are some typical applications of Hashing:</p>
+<p><a class="reference external" href="https://cp-algorithms.com/string/rabin-karp.html">Rabin-Karp algorithm</a> for pattern matching in a string in <em>O</em>(<em>n</em>) time</p>
+<p>Calculating the number of different substrings of a string in <em>O</em>(<em>n</em>2log<em>n</em>) (see below)</p>
+<p>Calculating the number of palindromic substrings in a string.</p>
+<section id="determine-the-number-of-different-substrings-in-a-string">
+<h4>Determine the number of different substrings in a string<a class="headerlink" href="#determine-the-number-of-different-substrings-in-a-string" title="Link to this heading"></a></h4>
+<p>Problem: Given a string <em>s</em> of length <em>n</em>, consisting only of lowercase English letters, find the number of different substrings in this string.</p>
+<p>To solve this problem, we iterate over all substring lengths <em>l</em>=1…<em>n</em>. For every substring length <em>l</em> we construct an array of hashes of all substrings of length <em>l</em> multiplied by the same power of <em>p</em>. The number of different elements in the array is equal to the number of distinct substrings of length <em>l</em> in the string. This number is added to the final answer.</p>
+<p>For convenience, we will use <em>h</em>[<em>i</em>] as the hash of the prefix with <em>i</em> characters, and define <em>h</em>[0]=0.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">count_unique_substrings</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e9</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p_pow</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="n">p_pow</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">l</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">set</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">hs</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">l</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">cur_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">l</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cur_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cur_h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_pow</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="mi">-1</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="w">            </span><span class="n">hs</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">cur_h</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">cnt</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">hs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="improve-no-collision-probability">
+<h3>Improve no-collision probability<a class="headerlink" href="#improve-no-collision-probability" title="Link to this heading"></a></h3>
+<p>Quite often the above mentioned polynomial hash is good enough, and no collisions will happen during tests. Remember, the probability that collision happens is only ≈1<em>m</em>. For <em>m</em>=109+9 the probability is ≈10−9 which is quite low. But notice, that we only did one comparison. What if we compared a string <em>s</em> with 106 different strings. The probability that at least one collision happens is now ≈10−3. And if we want to compare 106 different strings with each other (e.g. by counting how many unique  strings exists), then the probability of at least one collision  happening is already ≈1. It is pretty much guaranteed that this task will end with a collision and returns the wrong result.</p>
+<p>There is a really easy trick to get better probabilities. We can just compute two different hashes for each string (by using two different <em>p</em>, and/or different <em>m</em>, and compare these pairs instead. If <em>m</em> is about 109 for each of the two hash functions than this is more or less equivalent as having one hash function with <em>m</em>≈1018. When comparing 106 strings with each other, the probability that at least one collision happens is now reduced to ≈10−6.</p>
+</section>
+</section>
+<section id="rabin-karp-algorithm-for-string-matching">
+<h2>Rabin-Karp Algorithm for string matching<a class="headerlink" href="#rabin-karp-algorithm-for-string-matching" title="Link to this heading"></a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rabin_karp</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">31</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e9</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p_pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">));</span><span class="w"> </span>
+<span class="w">    </span><span class="n">p_pow</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">p_pow</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+<span class="w">        </span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">h</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">T</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">h_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">S</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+<span class="w">        </span><span class="n">h_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">h_s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"> </span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">occurences</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">T</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">cur_h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">S</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"> </span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cur_h</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">h_s</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_pow</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+<span class="w">            </span><span class="n">occurences</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">occurences</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="prefix-function-knuthmorrispratt-algorithm">
+<h2>Prefix function. Knuth–Morris–Pratt algorithm<a class="headerlink" href="#prefix-function-knuthmorrispratt-algorithm" title="Link to this heading"></a></h2>
+<section id="prefix-function-definition">
+<h3>Prefix function definition<a class="headerlink" href="#prefix-function-definition" title="Link to this heading"></a></h3>
+<p>You are given a string <em>s</em> of length <em>n</em>. The <strong>prefix function</strong> for this string is defined as an array <em>π</em> of length <em>n</em>, where <em>π</em>[<em>i</em>] is the length of the longest proper prefix of the substring <em>s</em>[0…<em>i</em>] which is also a suffix of this substring. A proper prefix of a string is a prefix that is not equal to the string itself. By definition, <em>π</em>[0]=0.</p>
+</section>
+<section id="trivial-algorithm">
+<h3>Trivial Algorithm<a class="headerlink" href="#trivial-algorithm" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">prefix_function</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pi</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">))</span>
+<span class="w">                </span><span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pi</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="efficient-algorithm">
+<h3>Efficient Algorithm<a class="headerlink" href="#efficient-algorithm" title="Link to this heading"></a></h3>
+<section id="first-optimization">
+<h4>First optimization<a class="headerlink" href="#first-optimization" title="Link to this heading"></a></h4>
+<p>The first important observation is, that the values of the prefix function can only increase by at most one.</p>
+<p>Indeed, otherwise, if <em>π</em>[<em>i</em>+1]&gt;<em>π</em>[<em>i</em>]+1, then we can take this suffix ending in position <em>i</em>+1 with the length <em>π</em>[<em>i</em>+1] and remove the last character from it. We end up with a suffix ending in position <em>i</em> with the length <em>π</em>[<em>i</em>+1]−1, which is better than <em>π</em>[<em>i</em>], i.e. we get a contradiction.</p>
+<p>Thus when moving to the next position, the value of the prefix function  can either increase by one, stay the same, or decrease by some amount. This fact already allows us to reduce the complexity of the algorithm to <em>O</em>(<em>n</em>2), because in one step the prefix function can grow at most by one. In total the function can grow at most <em>n</em> steps, and therefore also only can decrease a total of <em>n</em> steps. This means we only have to perform <em>O</em>(<em>n</em>) string comparisons, and reach the complexity <em>O</em>(<em>n</em>2).</p>
+</section>
+<section id="second-optimization">
+<h4>Second optimization<a class="headerlink" href="#second-optimization" title="Link to this heading"></a></h4>
+<p>Let’s go further, we want to get rid of the string comparisons. To accomplish this, we have to use all the information computed in the previous steps.</p>
+<p>So let us compute the value of the prefix function <em>π</em> for <em>i</em>+1. If <em>s</em>[<em>i</em>+1]=<em>s</em>[<em>π</em>[<em>i</em>]], then we can say with certainty that <em>π</em>[<em>i</em>+1]=<em>π</em>[<em>i</em>]+1, since we already know that the suffix at position <em>i</em> of length <em>π</em>[<em>i</em>] is equal to the prefix of length <em>π</em>[<em>i</em>].</p>
+<p>Indeed, if we find such a length <em>j</em>, then we again only need to compare the characters <em>s</em>[<em>i</em>+1] and <em>s</em>[<em>j</em>]. If they are equal, then we can assign <em>π</em>[<em>i</em>+1]=<em>j</em>+1. Otherwise we will need to find the largest value smaller than <em>j</em>, for which the prefix property holds, and so on. It can happen that this goes until <em>j</em>=0. If then <em>s</em>[<em>i</em>+1]=<em>s</em>[0], we assign <em>π</em>[<em>i</em>+1]=1, and <em>π</em>[<em>i</em>+1]=0 otherwise.</p>
+<p>So we already have a general scheme of the algorithm. The only question left is how do we effectively find the lengths for <em>j</em>. Let’s recap: for the current length <em>j</em> at the position <em>i</em> for which the prefix property holds, i.e. <em>s</em>[0…<em>j</em>−1]=<em>s</em>[<em>i</em>−<em>j</em>+1…<em>i</em>], we want to find the greatest <em>k</em>&lt;<em>j</em>, for which the prefix property holds.</p>
+</section>
+<section id="final-algorithm">
+<h4>Final algorithm<a class="headerlink" href="#final-algorithm" title="Link to this heading"></a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">prefix_function</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pi</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+<span class="w">            </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pi</span><span class="p">[</span><span class="n">j</span><span class="mi">-1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+<span class="w">            </span><span class="n">j</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pi</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="applications">
+<h3>Applications<a class="headerlink" href="#applications" title="Link to this heading"></a></h3>
+<section id="search-for-a-substring-in-a-string-the-knuth-morris-pratt-algorithm">
+<h4>Search for a substring in a string. The Knuth-Morris-Pratt algorithm<a class="headerlink" href="#search-for-a-substring-in-a-string-the-knuth-morris-pratt-algorithm" title="Link to this heading"></a></h4>
+</section>
+<section id="counting-the-number-of-occurrences-of-each-prefix">
+<h4>Counting the number of occurrences of each prefix<a class="headerlink" href="#counting-the-number-of-occurrences-of-each-prefix" title="Link to this heading"></a></h4>
+</section>
+<section id="the-number-of-different-substring-in-a-string">
+<h4>The number of different substring in a string<a class="headerlink" href="#the-number-of-different-substring-in-a-string" title="Link to this heading"></a></h4>
+<p>Given a string <em>s</em> of length <em>n</em>. We want to compute the number of different substrings appearing in it.</p>
+<p>We will solve this problem iteratively. Namely we will learn, knowing the current number of different  substrings, how to recompute this count by adding a character to the  end.</p>
+<p>So let <em>k</em> be the current number of different substrings in <em>s</em>, and we add the character <em>c</em> to the end of <em>s</em>. Obviously some new substrings ending in <em>c</em> will appear. We want to count these new substrings that didn’t appear before.</p>
+<p>We take the string <em>t</em>=<em>s</em>+<em>c</em> and reverse it. Now the task is transformed into computing how many prefixes there are that don’t appear anywhere else. If we compute the maximal value of the prefix function <em>π</em>max of the reversed string <em>t</em>, then the longest prefix that appears in <em>s</em> is <em>π</em>max long. Clearly also all prefixes of smaller length appear in it.</p>
+<p>Therefore the number of new substrings appearing when we add a new character <em>c</em> is |<em>s</em>|+1−<em>π</em>max.</p>
+<p>So for each character appended we can compute the number of new substrings in <em>O</em>(<em>n</em>) times, which gives a time complexity of <em>O</em>(<em>n</em>2) in total.</p>
+<p>It is worth noting, that we can also compute the number of different  substrings by appending the characters at the beginning, or by deleting  characters from the beginning or the end.</p>
+</section>
+</section>
+</section>
+<section id="z-function-and-its-calculation">
+<h2>Z-function and its calculation<a class="headerlink" href="#z-function-and-its-calculation" title="Link to this heading"></a></h2>
+<p>Suppose we are given a string <em>s</em> of length <em>n</em>. The <strong>Z-function</strong> for this string is an array of length <em>n</em> where the <em>i</em>-th element is equal to the greatest number of characters starting from the position <em>i</em> that coincide with the first characters of <em>s</em>.In other words, <em>z</em>[<em>i</em>] is the length of the longest string that is, at the same time, a prefix of <em>s</em> and a prefix of the suffix of <em>s</em> starting at <em>i</em>.</p>
+<p>The first element of Z-function, <em>z</em>[0], is generally not well defined. In this article we will assume it is  zero (although it doesn’t change anything in the algorithm  implementation).This article presents an algorithm for calculating the Z-function in <em>O</em>(<em>n</em>) time, as well as various of its applications.</p>
+<section id="id1">
+<h3>Trivial algorithm<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">z_function_trivial</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">z</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+<span class="w">            </span><span class="o">++</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To obtain an efficient algorithm we will compute the values of <em>z</em>[<em>i</em>] in turn from <em>i</em>=1 to <em>n</em>−1 but at the same time, when computing a new value, we’ll try to make the best use possible of the previously computed values.</p>
+<p>For the sake of brevity, let’s call <strong>segment matches</strong> those substrings that coincide with a prefix of <em>s</em>. For example, the value of the desired Z-function <em>z</em>[<em>i</em>] is the length of the segment match starting at position <em>i</em> (and that ends at position <em>i</em>+<em>z</em>[<em>i</em>]−1).</p>
+<p>To do this, we will keep <strong>the [<em>l</em>,<em>r</em>]</strong> <strong>indices of the rightmost segment match</strong>. That is, among all detected segments we will keep the one that ends rightmost. In a way, the index <em>r</em> can be seen as the “boundary” to which our string <em>s</em> has been scanned by the algorithm; everything beyond that point is not yet known.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">z_function</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// O(n)</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">z</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+<span class="w">            </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">l</span><span class="p">]);</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+<span class="w">            </span><span class="o">++</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+<span class="w">            </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Applications<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<section id="search-the-substring">
+<h4>Search the substring<a class="headerlink" href="#search-the-substring" title="Link to this heading"></a></h4>
+<p>To avoid confusion, we call <em>t</em> the <strong>string of text</strong>, and <em>p</em> the <strong>pattern</strong>. The problem is: find all occurrences of the pattern <em>p</em> inside the text <em>t</em>.</p>
+<p>To solve this problem, we create a new string <em>s</em>=<em>p</em>+⋄+<em>t</em>, that is, we apply string concatenation to <em>p</em> and <em>t</em> but we also put a separator character ⋄ in the middle (we’ll choose ⋄ so that it will certainly not be present anywhere in the strings <em>p</em> or <em>t</em>).</p>
+<p>Compute the Z-function for <em>s</em>. Then, for any <em>i</em> in the interval [0;length(<em>t</em>)−1], we will consider the corresponding value <em>k</em>=<em>z</em>[<em>i</em>+length(<em>p</em>)+1]. If <em>k</em> is equal to length(<em>p</em>) then we know there is one occurrence of <em>p</em> in the <em>i</em>-th position of <em>t</em>, otherwise there is no occurrence of <em>p</em> in the <em>i</em>-th position of <em>t</em>.The running time (and memory consumption) is <em>O</em>(length(<em>t</em>)+length(<em>p</em>)).</p>
+</section>
+<section id="number-of-distinct-substrings-in-a-string">
+<h4>Number of distinct substrings in a string<a class="headerlink" href="#number-of-distinct-substrings-in-a-string" title="Link to this heading"></a></h4>
+<p>Given a string <em>s</em> of length <em>n</em>, count the number of distinct substrings of <em>s</em>.</p>
+<p>We’ll solve this problem iteratively. That is: knowing the current  number of different substrings, recalculate this amount after adding to  the end of <em>s</em> one character.</p>
+<p>So, let <em>k</em> be the current number of distinct substrings of <em>s</em>. We append a new character <em>c</em> to <em>s</em>. Obviously, there can be some new substrings ending in this new character <em>c</em> (namely, all those strings that end with this symbol and that we haven’t encountered yet).</p>
+<p>Take a string <em>t</em>=<em>s</em>+<em>c</em> and invert it (write its characters in reverse order). Our task is now to count how many prefixes of <em>t</em> are not found anywhere else in <em>t</em>. Let’s compute the Z-function of <em>t</em> and find its maximum value <em>z<strong>m</strong>a**x</em>. Obviously, <em>t</em>’s prefix of length <em>z<strong>m</strong>a**x</em> occurs also somewhere in the middle of <em>t</em>. Clearly, shorter prefixes also occur.</p>
+<p>So, we have found that the number of new substrings that appear when symbol <em>c</em> is appended to <em>s</em> is equal to length(<em>t</em>)−<em>z<strong>m</strong>a**x</em>.</p>
+<p>Consequently, the running time of this solution is <em>O</em>(<em>n</em>2) for a string of length <em>n</em>.</p>
+<p>It’s worth noting that in exactly the same way we can recalculate, still in <em>O</em>(<em>n</em>) time, the number of distinct substrings when appending a character in  the beginning of the string, as well as when removing it (from the end  or the beginning).</p>
+</section>
+</section>
+</section>
+<section id="suffix-array">
+<h2>Suffix Array<a class="headerlink" href="#suffix-array" title="Link to this heading"></a></h2>
+<p>A <strong>suffix array</strong> will contain integers that represent the <strong>starting indexes</strong> of the all the suffixes of a given string, after the aforementioned suffixes are sorted.</p>
+<section id="construction">
+<h3>Construction<a class="headerlink" href="#construction" title="Link to this heading"></a></h3>
+<section id="o-n-2logn-approach">
+<h4><em>O</em>(<em>n^2</em>log<em>n</em>) approach<a class="headerlink" href="#o-n-2logn-approach" title="Link to this heading"></a></h4>
+<p>This is the most naive approach. Get all the suffixes and sort them using quicksort or mergesort and simultaneously retain their original indices. Sorting uses <em>O</em>(<em>n</em>log<em>n</em>) comparisons, and since comparing two strings will additionally take <em>O</em>(<em>n</em>) time, we get the final complexity of <em>O</em>(<em>n</em>2log<em>n</em>).</p>
+</section>
+<section id="o-nlogn-approach">
+<h4><em>O</em>(<em>n</em>log<em>n</em>) approach<a class="headerlink" href="#o-nlogn-approach" title="Link to this heading"></a></h4>
+<p>Since we are going to sort cyclic shifts, we will consider <strong>cyclic substrings</strong>. We will use the notation <em>s</em>[<em>i</em>…<em>j</em>] for the substring of <em>s</em> even if <em>i</em>&gt;<em>j</em>. In this case we actually mean the string <em>s</em>[<em>i</em>…<em>n</em>−1]+<em>s</em>[0…<em>j</em>]. In addition we will take all indices modulo the length of <em>s</em>, and will omit the modulo operation for simplicity.</p>
+<p>The algorithm we discuss will perform ⌈log<em>n</em>⌉+1 iterations. In the <em>k</em>-th iteration (<em>k</em>=0…⌈log<em>n</em>⌉) we sort the <em>n</em> cyclic substrings of <em>s</em> of length 2<em>k</em>. After the ⌈log<em>n</em>⌉-th iteration the substrings of length 2⌈log<em>n</em>⌉≥<em>n</em> will be sorted, so this is equivalent to sorting the cyclic shifts altogether.</p>
+<p>In each iteration of the algorithm, in addition to the permutation <em>p</em>[0…<em>n</em>−1], where <em>p</em>[<em>i</em>] is the index of the <em>i</em>-th substring (starting at <em>i</em> and with length 2<em>k</em>) in the sorted order, we will also maintain an array <em>c</em>[0…<em>n</em>−1], where <em>c</em>[<em>i</em>] corresponds to the <strong>equivalence class</strong> to which the substring belongs. Because some of the substrings will be identical, and the algorithm needs to treat them equally. For convenience the classes will be labeled by numbers started from zero. In addition the numbers <em>c</em>[<em>i</em>] will be assigned in such a way that they preserve information about the order: if one substring is smaller than the other, then it should also have a smaller class label. The number of equivalence classes will be stored in a variable classes.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sort_cyclic_shifts</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">alphabet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">cnt</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">alphabet</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cnt</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">alphabet</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cnt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">cnt</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">];</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">p</span><span class="p">[</span><span class="o">--</span><span class="n">cnt</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">c</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]])</span>
+<span class="w">            </span><span class="n">classes</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">c</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">	</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pn</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">cn</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pn</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pn</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">                </span><span class="n">pn</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">fill</span><span class="p">(</span><span class="n">cnt</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">cnt</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">classes</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="n">pn</span><span class="p">[</span><span class="n">i</span><span class="p">]]]</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">classes</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">cnt</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span>
+<span class="w">            </span><span class="n">p</span><span class="p">[</span><span class="o">--</span><span class="n">cnt</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="n">pn</span><span class="p">[</span><span class="n">i</span><span class="p">]]]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pn</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="n">cn</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">c</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span><span class="w"> </span><span class="n">c</span><span class="p">[(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="p">))</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">n</span><span class="p">]};</span>
+<span class="w">            </span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">c</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]],</span><span class="w"> </span><span class="n">c</span><span class="p">[(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="p">))</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">n</span><span class="p">]};</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">prev</span><span class="p">)</span>
+<span class="w">                </span><span class="o">++</span><span class="n">classes</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cn</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">c</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">cn</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="aho-corasick-algorithm">
+<h2>Aho-Corasick algorithm<a class="headerlink" href="#aho-corasick-algorithm" title="Link to this heading"></a></h2>
+<section id="construction-of-trie">
+<h3>Construction of Trie<a class="headerlink" href="#construction-of-trie" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">26</span><span class="p">;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">next</span><span class="p">[</span><span class="n">K</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">leaf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Vertex</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fill</span><span class="p">(</span><span class="n">begin</span><span class="p">(</span><span class="n">next</span><span class="p">),</span><span class="w"> </span><span class="n">end</span><span class="p">(</span><span class="n">next</span><span class="p">),</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">Vertex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">trie</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">add_string</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">trie</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">trie</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trie</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">            </span><span class="n">trie</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trie</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">trie</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">leaf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="construction-of-an-automaton">
+<h3>Construction of an automaton<a class="headerlink" href="#construction-of-an-automaton" title="Link to this heading"></a></h3>
+<p>More strictly, let us be in a state <em>p</em> corresponding to the string <em>t</em>, and we want to transition to a different state with the character <em>c</em>. If there is an edge labeled with this letter <em>c</em>, then we can simply go over this edge, and get the vertex corresponding to <em>t</em>+<em>c</em>. If there is no such edge, then we must find the state corresponding to the longest proper suffix of the string <em>t</em> (the longest available in the trie), and try to perform a transition via <em>c</em> from there.</p>
+<p>A <strong>suffix link</strong> for a vertex <em>p</em> is a edge that points to the longest proper suffix of the string corresponding to the vertex <em>p</em>. The only special case is the root of the trie, the suffix link will  point to itself. Now we can reformulate the statement about the transitions in the  automaton like this: while from the current vertex of the trie there is no transition using  the current letter (or until we reach the root), we follow the suffix  link.</p>
+<p>Note that if we want to find a suffix link for some vertex <em>v</em>, then we firstly have the base case that the root vertex has its suffix  link as itself, and all nodes that are immediate children of the root  vertex (i.e the vertices associated with prefixes of length one) also  have their suffix links as the root vertex. Moreover, the suffix links  of all deeper vertices can be evaluated as follows: we can go to the  ancestor <em>p</em> of this current vertex (let <em>c</em> be the letter of the edge from <em>p</em> to <em>v</em>), then follow its suffix link, and perform the transition with the letter <em>c</em> from there.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">26</span><span class="p">;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">next</span><span class="p">[</span><span class="n">K</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">leaf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">pch</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">link</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">go</span><span class="p">[</span><span class="n">K</span><span class="p">];</span>
+
+<span class="w">    </span><span class="n">Vertex</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="o">=</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="o">=</span><span class="sc">&#39;$&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">(</span><span class="n">p</span><span class="p">),</span><span class="w"> </span><span class="n">pch</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fill</span><span class="p">(</span><span class="n">begin</span><span class="p">(</span><span class="n">next</span><span class="p">),</span><span class="w"> </span><span class="n">end</span><span class="p">(</span><span class="n">next</span><span class="p">),</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">fill</span><span class="p">(</span><span class="n">begin</span><span class="p">(</span><span class="n">go</span><span class="p">),</span><span class="w"> </span><span class="n">end</span><span class="p">(</span><span class="n">go</span><span class="p">),</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">Vertex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">add_string</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="k">const</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">            </span><span class="n">t</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">leaf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">go</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">get_link</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">link</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">p</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">link</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">link</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">go</span><span class="p">(</span><span class="n">get_link</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">p</span><span class="p">),</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">pch</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">link</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">go</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">go</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">go</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">next</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">go</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">go</span><span class="p">(</span><span class="n">get_link</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">t</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">go</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+<span class="p">}</span><span class="w"> </span>
+</pre></div>
+</div>
+</section>
+<section id="application">
+<h3>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h3>
+<section id="find-all-strings-from-a-given-set-in-a-text">
+<h4>Find all strings from a given set in a text<a class="headerlink" href="#find-all-strings-from-a-given-set-in-a-text" title="Link to this heading"></a></h4>
+</section>
+<section id="finding-the-lexicographical-smallest-string-of-a-given-length-that-doesn-t-match-any-given-strings">
+<h4>Finding the lexicographical smallest string of a given length that doesn’t match any given strings<a class="headerlink" href="#finding-the-lexicographical-smallest-string-of-a-given-length-that-doesn-t-match-any-given-strings" title="Link to this heading"></a></h4>
+</section>
+<section id="finding-the-shortest-string-containing-all-given-strings">
+<h4>Finding the shortest string containing all given strings<a class="headerlink" href="#finding-the-shortest-string-containing-all-given-strings" title="Link to this heading"></a></h4>
+</section>
+<section id="finding-the-lexicographical-smallest-string-of-length-l-containing-k-strings">
+<h4>Finding the lexicographical smallest string of length <em>L</em> containing <em>k</em> strings<a class="headerlink" href="#finding-the-lexicographical-smallest-string-of-length-l-containing-k-strings" title="Link to this heading"></a></h4>
+</section>
+</section>
+</section>
+<section id="suffix-tree-ukkonen-s-algorithm">
+<h2>Suffix Tree. Ukkonen’s Algorithm<a class="headerlink" href="#suffix-tree-ukkonen-s-algorithm" title="Link to this heading"></a></h2>
+</section>
+<section id="suffix-automaton">
+<h2>Suffix Automaton<a class="headerlink" href="#suffix-automaton" title="Link to this heading"></a></h2>
+</section>
+<section id="lyndon-factorization">
+<h2>Lyndon factorization<a class="headerlink" href="#lyndon-factorization" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+      Previous:
+    
+    <a href="mono_queue.html">
+      
+      <span>Monotonic Queue and similar ideas</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+      Next: 
+    <a href="../recap/cs452.html">
+      <span>The CS452 Journey - W23</span>
+      
+    </a>
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mono_queue.html" class="btn btn-neutral float-left" title="Monotonic Queue and similar ideas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../recap/index.html" class="btn btn-neutral float-right" title="Recap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

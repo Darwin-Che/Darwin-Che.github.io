@@ -1,27 +1,28 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dataloader is Blocking &mdash; Zhaocheng Che&#39;s Blog 2025-11-09 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+  <title>Dataloader is Blocking &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-      <script src="../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=1cbb73ba"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Zhaocheng Che’s Blog" href="../index.html" />     
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MsgBox In-place Serializer in Rust" href="msgbox.html" />
+    <link rel="prev" title="Tech Posts" href="index.html" />     
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,11 +33,11 @@
 
           
           
-          <a href="../index.html" class="icon icon-home">
+          <a href="../../index.html" class="icon icon-home">
             Zhaocheng Che's Blog
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -45,26 +46,33 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Dataloader is Blocking</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#background">Background</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#graphql-library-in-elixir">GraphQL Library in Elixir</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dataloader-in-absinthe">Dataloader in Absinthe</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tech Posts</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Dataloader is Blocking</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#background">Background</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#graphql-library-in-elixir">GraphQL Library in Elixir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dataloader-in-absinthe">Dataloader in Absinthe</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#absinthe-resolution-model">Absinthe Resolution Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#absinthe-async-middleware">Absinthe Async Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#absinthe-resolution-model">Absinthe Resolution Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#absinthe-async-middleware">Absinthe Async Middleware</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#discussion">Discussion</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#scenario-1-single-layer-database">Scenario 1: Single Layer Database</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#scenario-2-remote-service">Scenario 2: Remote Service</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#scenario-3-blended-duration">Scenario 3: Blended Duration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#discussion">Discussion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-1-single-layer-database">Scenario 1: Single Layer Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-2-remote-service">Scenario 2: Remote Service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-3-blended-duration">Scenario 3: Blended Duration</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#random-thoughts">Random Thoughts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#random-thoughts">Random Thoughts</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="msgbox.html">MsgBox In-place Serializer in Rust</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_c.html">C language Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algo/index.html">Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
 </ul>
 
         </div>
@@ -73,17 +81,18 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Zhaocheng Che's Blog</a>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tech Posts</a></li>
       <li class="breadcrumb-item active">Dataloader is Blocking</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/posts/graphql-dataloader.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/posts/tech/graphql-dataloader.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -185,8 +194,8 @@ Here for simplicity, I am going to use the <code class="docutils literal notrans
 The left one is without Dataloader, the right one is with Dataloader.</p>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p><img alt="Left image" src="../_images/absinthe_resolution_naive.drawio.png" /></p></th>
-<th class="head text-center"><p><img alt="Right image" src="../_images/absinthe_resolution_dataloader.drawio.png" /></p></th>
+<tr class="row-odd"><th class="head text-center"><p><img alt="Left image" src="../../_images/absinthe_resolution_naive.drawio.png" /></p></th>
+<th class="head text-center"><p><img alt="Right image" src="../../_images/absinthe_resolution_dataloader.drawio.png" /></p></th>
 </tr>
 </thead>
 <tbody>
@@ -222,8 +231,8 @@ After all regular fields are finished, Absinthe allows Dataloader to run any pen
 <p>This is real nonblocking IO. Here’s the execution timing graph (compared to dataloader)</p>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head text-center"><p><img alt="Left image" src="../_images/absinthe_resolution_async.drawio.png" /></p></th>
-<th class="head text-center"><p><img alt="Right image" src="../_images/absinthe_resolution_dataloader.drawio.png" /></p></th>
+<tr class="row-odd"><th class="head text-center"><p><img alt="Left image" src="../../_images/absinthe_resolution_async.drawio.png" /></p></th>
+<th class="head text-center"><p><img alt="Right image" src="../../_images/absinthe_resolution_dataloader.drawio.png" /></p></th>
 </tr>
 </thead>
 <tbody>
@@ -339,6 +348,12 @@ to maximize parallelization.</p>
      
 <div class="section ablog__prev-next">
   <span class="ablog__prev">
+      Previous:
+    
+    <a href="msgbox.html">
+      
+      <span>MsgBox In-place Serializer in Rust</span>
+    </a>
     
   </span>
   <span class="ablog__spacer">&nbsp;</span>
@@ -352,7 +367,8 @@ to maximize parallelization.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="Zhaocheng Che’s Blog" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Tech Posts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="msgbox.html" class="btn btn-neutral float-right" title="MsgBox In-place Serializer in Rust" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monotonic Queue and similar ideas &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="String Processing" href="string.html" />
+    <link rel="prev" title="Linear Algebra Algorithms" href="linalg.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Tech Posts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Algorithms</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algebra.html">Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics.html">Combinatorics Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_struc.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dp.html">DP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geo_1.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph.html">Graph Algo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html">Linear Algebra Algorithms</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Monotonic Queue and similar ideas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#monotonic-queue-adt">Monotonic Queue ADT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstract-idea">Abstract idea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-tricks">Code Tricks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="string.html">String Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Algorithms</a></li>
+      <li class="breadcrumb-item active">Monotonic Queue and similar ideas</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/algo/mono_queue.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="monotonic-queue-and-similar-ideas">
+<h1>Monotonic Queue and similar ideas<a class="headerlink" href="#monotonic-queue-and-similar-ideas" title="Link to this heading"></a></h1>
+<p>https://1e9.medium.com/monotonic-queue-notes-980a019d5793</p>
+<section id="monotonic-queue-adt">
+<h2>Monotonic Queue ADT<a class="headerlink" href="#monotonic-queue-adt" title="Link to this heading"></a></h2>
+<p>“MQ is mostly used as a dynamic programming optimization technique and for some problems where it is applicable we can reduce the reasoning to finding the nearest element. The advantage of MQ is linear time complexity.”</p>
+<p>https://leetcode.com/problems/daily-temperatures/</p>
+<p>“Given a list of daily temperatures <code class="docutils literal notranslate"><span class="pre">T</span></code>, return a list such  that, for each day in the input, tells you how many days you would have  to wait until a warmer temperature.  If there is no future day for which this is possible, put <code class="docutils literal notranslate"><span class="pre">0</span></code> instead.</p>
+<p>For example, given the list of temperatures <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">=</span> <span class="pre">[73,</span> <span class="pre">74,</span> <span class="pre">75,</span> <span class="pre">71,</span> <span class="pre">69,</span> <span class="pre">72,</span> <span class="pre">76,</span> <span class="pre">73]</span></code>, your output should be <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">2,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.”</p>
+<p>i.e. Find the next larger element</p>
+<p>Maintaining a list of increasing subsequence that starts with index i</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dailyTemperatures</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ans</span><span class="p">(</span><span class="n">T</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">	</span><span class="n">stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">st</span><span class="p">;</span><span class="w"> </span><span class="c1">// storing the indices</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="o">--</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">T</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">        </span><span class="n">ans</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">        </span><span class="n">st</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code is easy to read. The runtime is O(n) by thinking about the size of stack in amortized workload. A slightly improved but difficult to read version is</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dailyTemperatures</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">temperatures</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">res</span><span class="p">(</span><span class="n">temperatures</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temperatures</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="o">--</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">temperatures</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">temperatures</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">temperatures</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temperatures</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">// either j == size || temperatures[j] &gt; temperatures[i]</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">temperatures</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="abstract-idea">
+<h2>Abstract idea<a class="headerlink" href="#abstract-idea" title="Link to this heading"></a></h2>
+<p>Any DP problem where <code class="docutils literal notranslate"><span class="pre">S[i]</span> <span class="pre">=</span> <span class="pre">max(A[j:k])</span> <span class="pre">+</span> <span class="pre">C</span></code> where <code class="docutils literal notranslate"><span class="pre">j</span> <span class="pre">&lt;</span> <span class="pre">k</span> <span class="pre">&lt;=</span> <span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">C</span></code> is a constant.</p>
+</section>
+<section id="code-tricks">
+<h2>Code Tricks<a class="headerlink" href="#code-tricks" title="Link to this heading"></a></h2>
+<p>Pay attention to the invariant of of poping an element from the stack</p>
+<ul class="simple">
+<li><p>Elements from <code class="docutils literal notranslate"><span class="pre">j</span></code> to <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">-</span> <span class="pre">1</span></code> are all greater than <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p></li>
+<li><p>Elements after the new top of the stack are all greater than <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p></li>
+</ul>
+<p>This means [new top, i] are the two nearest element bigger than [j].</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">maxSumMinProduct</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">n</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dp</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">st</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">       </span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">n</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">back</span><span class="p">()]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">n</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+<span class="w">            </span><span class="n">st</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+<span class="w">            </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">st</span><span class="p">.</span><span class="n">back</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">st</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">1000000007</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+      Previous:
+    
+    <a href="linalg.html">
+      
+      <span>Linear Algebra Algorithms</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+      Next: 
+    <a href="string.html">
+      <span>String Processing</span>
+      
+    </a>
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="linalg.html" class="btn btn-neutral float-left" title="Linear Algebra Algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="string.html" class="btn btn-neutral float-right" title="String Processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

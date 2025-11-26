@@ -6,13 +6,16 @@
 Zhaocheng Che's Blog
 ========================
 
-Hi, I'm Zhaocheng Che. This is my coding blog.
+Hi, I'm Zhaocheng Che. This is my blog.
 
 Reach me at `chezhaocheng[AT]outlook.com`.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Blog
 
-   posts/graphql-dataloader
+   posts/tech/index
+   posts/algo/index
+   posts/recap/index
 
+   

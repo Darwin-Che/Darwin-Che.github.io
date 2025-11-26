@@ -1,0 +1,601 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geometry &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Graph Algo" href="graph.html" />
+    <link rel="prev" title="DP" href="dp.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Tech Posts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Algorithms</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algebra.html">Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics.html">Combinatorics Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_struc.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dp.html">DP</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Geometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linear-operations">Linear operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dot-product">Dot product</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#properties">Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cross-product">Cross product</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercises">Exercises</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#line-intersection">Line intersection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#planes-intersection">Planes intersection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#finding-the-equation-of-a-line-for-a-segment">Finding the equation of a line for a segment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#two-dimensional-case">Two-dimensional case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integer-case">Integer case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#real-case">Real case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#three-dimensional-and-multidimensional-case">Three-dimensional and multidimensional case</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#intersection-point-of-lines">Intersection Point of Lines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#solution">Solution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#check-if-two-segments-intersect">Check if two segments intersect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#algorithm">Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#finding-intersection-of-two-segments">Finding Intersection of Two Segments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Solution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#circle-line-intersection">Circle-Line Intersection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#circle-circle-intersection">Circle-Circle Intersection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graph.html">Graph Algo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linalg.html">Linear Algebra Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mono_queue.html">Monotonic Queue and similar ideas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="string.html">String Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Algorithms</a></li>
+      <li class="breadcrumb-item active">Geometry</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/algo/geo_1.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="geometry">
+<h1>Geometry<a class="headerlink" href="#geometry" title="Link to this heading"></a></h1>
+<section id="linear-operations">
+<h2>Linear operations<a class="headerlink" href="#linear-operations" title="Link to this heading"></a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">point2d</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ftype</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">point2d</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">ftype</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">+=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">-=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">*=</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">/=</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point2d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="w"> </span><span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point2d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="w"> </span><span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point2d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point2d</span><span class="w"> </span><span class="k">operator</span><span class="o">/</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point2d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+<span class="n">point2d</span><span class="w"> </span><span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">point3d</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ftype</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="w">    </span><span class="n">point3d</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">ftype</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ftype</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">z</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">+=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">        </span><span class="n">z</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">-=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">        </span><span class="n">z</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">*=</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="n">z</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">/=</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="n">y</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="n">z</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point3d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="w"> </span><span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point3d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="w"> </span><span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point3d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">point3d</span><span class="w"> </span><span class="k">operator</span><span class="o">/</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">point3d</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+<span class="n">point3d</span><span class="w"> </span><span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">ftype</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dot-product">
+<h2>Dot product<a class="headerlink" href="#dot-product" title="Link to this heading"></a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ftype</span><span class="w"> </span><span class="nf">dot</span><span class="p">(</span><span class="n">point2d</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">ftype</span><span class="w"> </span><span class="nf">dot</span><span class="p">(</span><span class="n">point3d</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="properties">
+<h3>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h3>
+<p>We can define many geometrical properties via the dot product. For example</p>
+<p>Norm : <span class="math notranslate nohighlight">\(|a|^2 = a \cdot a\)</span></p>
+<p>Projection a onto b: <span class="math notranslate nohighlight">\(\frac{a \cdot b}{|b|}\)</span></p>
+<p>Angle between vectors : <span class="math notranslate nohighlight">\(arccos (\frac{a \cdot b} {|a| \cdot |b|})\)</span></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ftype</span><span class="w"> </span><span class="nf">norm</span><span class="p">(</span><span class="n">point2d</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">double</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="n">point2d</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="kt">double</span><span class="w"> </span><span class="nf">proj</span><span class="p">(</span><span class="n">point2d</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">double</span><span class="w"> </span><span class="nf">angle</span><span class="p">(</span><span class="n">point2d</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">acos</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">b</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In 2D these vectors will form a line, in 3D they will form a plane. Note that this result allows us to define a line in 2D as <strong>r</strong>⋅<strong>n</strong>=<em>C</em> or (<strong>r</strong>−<strong>r</strong>0)⋅<strong>n</strong>=0 where <strong>n</strong> is vector orthogonal to the line and <strong>r</strong>0 is any vector already present on the line and <em>C</em>=<strong>r</strong>0⋅<strong>n</strong>. In the same manner a plane can be defined in 3D.</p>
+</section>
+</section>
+<section id="cross-product">
+<h2>Cross product<a class="headerlink" href="#cross-product" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+a \cross b = -b \cross a \\
+(\alpha \cdot a) \cross b = \alpha \cdot a \cross b \\
+a \cdot (b \cross c) = b \cdot (c \cross a) = -a \cdot (c \cross b)
+\end{split}\]</div>
+<p>If we will take the sign into consideration then the area will be positive if the rotation from <strong>a</strong> to <strong>b</strong> (i.e. from the view of the point of <strong>e</strong><em>z</em>) is performed counter-clockwise and negative otherwise. That defines the pseudo-scalar product. Note that it also equals |<strong>a</strong>|⋅|<strong>b</strong>|sin<em>θ</em> where <em>θ</em> is angle from <strong>a</strong> to <strong>b</strong> count counter-clockwise (and negative if rotation is clockwise).</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">point3d</span><span class="w"> </span><span class="nf">cross</span><span class="p">(</span><span class="n">point3d</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">point3d</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">,</span>
+<span class="w">                   </span><span class="n">a</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">z</span><span class="p">,</span>
+<span class="w">                   </span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">ftype</span><span class="w"> </span><span class="nf">triple</span><span class="p">(</span><span class="n">point3d</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">point3d</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="n">ftype</span><span class="w"> </span><span class="nf">cross</span><span class="p">(</span><span class="n">point2d</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As for the cross product, it equals to the zero vector iff the vectors <strong>a</strong> and <strong>b</strong> are collinear (they form a common line, i.e. they are parallel). The same thing holds for the triple product, it is equal to zero iff the vectors <strong>a</strong>, <strong>b</strong> and <strong>c</strong> are coplanar (they form a common plane).</p>
+<p>From this we can obtain universal equations defining lines and planes. A line can be defined via its direction vector <strong>d</strong> and an initial point <strong>r</strong>0 or by two points <strong>a</strong> and <strong>b</strong>. It is defined as (<strong>r</strong>−<strong>r</strong>0)×<strong>d</strong>=0 or as (<strong>r</strong>−<strong>a</strong>)×(<strong>b</strong>−<strong>a</strong>)=0. As for planes, it can be defined by three points <strong>a</strong>, <strong>b</strong> and <strong>c</strong> as (<strong>r</strong>−<strong>a</strong>)⋅((<strong>b</strong>−<strong>a</strong>)×(<strong>c</strong>−<strong>a</strong>))=0 or by initial point <strong>r</strong>0 and two direction vectors lying in this plane <strong>d</strong>1 and <strong>d</strong>2: (<strong>r</strong>−<strong>r</strong>0)⋅(<strong>d</strong>1×<strong>d</strong>2)=0.</p>
+<p>In 2D the pseudo-scalar product also may be used to check the  orientation between two vectors because it is positive if the rotation  from the first to the second vector is clockwise and negative otherwise. And, of course, it can be used to calculate areas of polygons, which is  described in a different article. A triple product can be used for the same purpose in 3D space.</p>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Link to this heading"></a></h2>
+<section id="line-intersection">
+<h3>Line intersection<a class="headerlink" href="#line-intersection" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">point2d</span><span class="w"> </span><span class="nf">intersect</span><span class="p">(</span><span class="n">point2d</span><span class="w"> </span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">d1</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">a2</span><span class="p">,</span><span class="w"> </span><span class="n">point2d</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cross</span><span class="p">(</span><span class="n">a2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">cross</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span><span class="w"> </span><span class="n">d2</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">d1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="planes-intersection">
+<h3>Planes intersection<a class="headerlink" href="#planes-intersection" title="Link to this heading"></a></h3>
+<p>Don’t understand</p>
+</section>
+</section>
+<section id="finding-the-equation-of-a-line-for-a-segment">
+<h2>Finding the equation of a line for a segment<a class="headerlink" href="#finding-the-equation-of-a-line-for-a-segment" title="Link to this heading"></a></h2>
+<section id="two-dimensional-case">
+<h3>Two-dimensional case<a class="headerlink" href="#two-dimensional-case" title="Link to this heading"></a></h3>
+<p>Given <span class="math notranslate nohighlight">\(P_x, P_y, Q_x, Q_y\)</span>.</p>
+<p>It is necessary to construct <strong>the equation of a line in the plane</strong> passing through this segment, i.e. find the coefficients <em>A</em>,<em>B</em>,<em>C</em> in the equation of a line: <span class="math notranslate nohighlight">\(Ax + By + C = 0\)</span>.
+$<span class="math notranslate nohighlight">\(
+A = P_y - Q_y \\
+B = Q_x - P_x \\
+C = -A P_x - B P_y
+\)</span>$</p>
+</section>
+<section id="integer-case">
+<h3>Integer case<a class="headerlink" href="#integer-case" title="Link to this heading"></a></h3>
+<p>An important advantage of this method of constructing a straight line is that if the coordinates of the ends were integer, then the  coefficients obtained will also be <strong>integer</strong> . In some cases, this allows one to perform geometric operations without resorting to real numbers at all.</p>
+<p>However, there is a small drawback: for the same straight line different triples of coefficients can be obtained. To avoid this, but do not go away from the integer coefficients, you can apply the following technique, often called <strong>rationing</strong>. Find the <a class="reference external" href="https://cp-algorithms.com/algebra/euclid-algorithm.html">greatest common divisor</a> of numbers |<em>A</em>|,|<em>B</em>|,|<em>C</em>| , we divide all three coefficients by it, and then we make the normalization of the sign: if <em>A</em>&lt;0 or <em>A</em>=0,<em>B</em>&lt;0 then multiply all three coefficients by −1 . As a result, we will come to the conclusion that for identical straight  lines, identical triples of coefficients will be obtained, which makes  it easy to check straight lines for equality.</p>
+</section>
+<section id="real-case">
+<h3>Real case<a class="headerlink" href="#real-case" title="Link to this heading"></a></h3>
+<p>When working with real numbers, you should always be aware of errors.</p>
+<p>The coefficients <em>A</em> and <em>B</em> will have the order of the original coordinates, the coefficient <em>C</em> is of the order of the square of them. This may already be quite large numbers, and, for example, when we <a class="reference external" href="https://cp-algorithms.com/geometry/lines-intersection.html">intersect straight lines</a>, they will become even larger, which can lead to large rounding errors  already when the coordinates of the end points are of order 103.</p>
+<p>Therefore, when working with real numbers, it is desirable to produce the so-called <strong>normalization</strong>, this is straightforward: namely, to make the coefficients such that <em>A</em>^2+<em>B</em>^2=1 .</p>
+<p>Finally, we mention the <strong>comparison</strong> of straight lines -  in fact, after such a normalization, for the same straight line, only  two triples of coefficients can be obtained: up to multiplication by −1. Accordingly, if we make an additional normalization taking into account the sign (if <em>A</em>&lt;−<em>ε</em>  or |<em>A</em>|&lt;<em>ε</em>, <em>B</em>&lt;−<em>ε</em> then multiply by −1 ), the resulting coefficients will be unique.</p>
+</section>
+<section id="three-dimensional-and-multidimensional-case">
+<h3>Three-dimensional and multidimensional case<a class="headerlink" href="#three-dimensional-and-multidimensional-case" title="Link to this heading"></a></h3>
+<p>Already in the three-dimensional case there is <strong>no simple equation</strong> describing a straight line (it can be defined as the intersection of  two planes, that is, a system of two equations, but this is an  inconvenient method).</p>
+<p>Consequently, in the three-dimensional and multidimensional cases we must use the <strong>parametric method of defining a straight line</strong> , <span class="math notranslate nohighlight">\(p + vt, t \in \R\)</span>.</p>
+</section>
+</section>
+<section id="intersection-point-of-lines">
+<h2>Intersection Point of Lines<a class="headerlink" href="#intersection-point-of-lines" title="Link to this heading"></a></h2>
+<p>You are given two lines, described via the equations <em>a</em>1<em>x</em>+<em>b</em>1<em>y</em>+<em>c</em>1=0 and  <em>a</em>2<em>x</em>+<em>b</em>2<em>y</em>+<em>c</em>2=0. We have to find the intersection point of the lines, or determine that the lines are parallel.</p>
+<section id="solution">
+<h3>Solution<a class="headerlink" href="#solution" title="Link to this heading"></a></h3>
+<p>If two lines are not parallel, they intersect. To find their intersection point, we need to solve the system of linear equations.</p>
+<p>Using Cramer’s rule, we can immediately write down the solution for the  system, which will give us the required intersection point of the lines:
+$<span class="math notranslate nohighlight">\(
+x = - \frac{c_1b_2-c_2b_1} {a_1b_2 - a_2b_1}\\
+y = - \frac{a_1c_2 - a_2c_1} {a_1b_2-a_2b_1}
+\)</span><span class="math notranslate nohighlight">\(
+If the denominator equals 0, then either the system has no solutions (the lines are parallel and  distinct) or there are infinitely many solutions (the lines overlap). If \)</span>a_1c_2-a_2c_1 = 0 = c_1b_2-c_2b_1$, then overlap.</p>
+<p>Notice, a different approach for computing the intersection point is explained in the article <a class="reference external" href="https://cp-algorithms.com/geometry/basic-geometry.html">Basic Geometry</a>.</p>
+</section>
+<section id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">pt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">line</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">EPS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-9</span><span class="p">;</span>
+
+<span class="kt">double</span><span class="w"> </span><span class="nf">det</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="o">*</span><span class="n">d</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">intersect</span><span class="p">(</span><span class="n">line</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">zn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">zn</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">res</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">zn</span><span class="p">;</span>
+<span class="w">    </span><span class="n">res</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">zn</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">parallel</span><span class="p">(</span><span class="n">line</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">b</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">equivalent</span><span class="p">(</span><span class="n">line</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">b</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span>
+<span class="w">        </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span>
+<span class="w">        </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="check-if-two-segments-intersect">
+<h2>Check if two segments intersect<a class="headerlink" href="#check-if-two-segments-intersect" title="Link to this heading"></a></h2>
+<p>You are given two segments (<em>a</em>,<em>b</em>) and (<em>c</em>,<em>d</em>). You have to check if they intersect. Of course, you may find their intersection and check if it isn’t empty,  but this can’t be done in integers for segments with integer  coordinates. The approach described here can work in integers.</p>
+<section id="algorithm">
+<h3>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading"></a></h3>
+<p>Firstly, consider the case when the segments are part of the same line. In this case it is sufficient to check if their projections on <em>O**x</em> and <em>O**y</em> intersect. In the other case <em>a</em> and <em>b</em> must not lie on the same side of line (<em>c</em>,<em>d</em>), and <em>c</em> and <em>d</em> must not lie on the same side of line (<em>a</em>,<em>b</em>). It can be checked with a couple of cross products.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">pt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">pt</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">pt</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">_x</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">_y</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">_x</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="n">_y</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">pt</span><span class="w"> </span><span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">pt</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">cross</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">cross</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">).</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">sgn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">inter1</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
+<span class="w">        </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">)</span>
+<span class="w">        </span><span class="n">swap</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">check_inter</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">inter1</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">inter1</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sgn</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sgn</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">           </span><span class="n">sgn</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sgn</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">cross</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="finding-intersection-of-two-segments">
+<h2>Finding Intersection of Two Segments<a class="headerlink" href="#finding-intersection-of-two-segments" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Solution<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>We can find the intersection point of segments in the same way as <a class="reference external" href="https://cp-algorithms.com/geometry/lines-intersection.html">the intersection of lines</a>:  reconstruct line equations from the segments’ endpoints and check whether they are parallel.</p>
+<p>If the lines are not parallel, we need to find their point of intersection and check whether it belongs to both segments (to do this it’s sufficient to verify that the intersection point belongs to each segment projected on X and Y axes).  In this case the answer will be either “no intersection” or the single point of lines’ intersection.</p>
+<p>The case of parallel lines is slightly more complicated (the case of  one or more segments being a single point also belongs here). In this case we need to check that both segments belong to the same  line. If they don’t, the answer is “no intersection”. If they do, the answer is the intersection of the segments belonging to  the same line, which is obtained by  ordering the endpoints of both segments in the increasing order of  certain coordinate and taking the rightmost of left endpoints and the  leftmost of right endpoints.</p>
+<p>If both segments are single points, these points have to be identical, and it makes sense to perform this check separately.</p>
+<p>In the beginning of the algorithm let’s add a bounding box check - it is necessary for the case when the segments belong to the same line,  and (being a lightweight check) it allows the algorithm to work faster  on average on random tests.</p>
+</section>
+<section id="id2">
+<h3>Implementation<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Here is the implementation, including all helper functions for lines and segments processing.</p>
+<p>The main function <code class="docutils literal notranslate"><span class="pre">intersect</span></code> returns true if the segments have a non-empty intersection,  and stores endpoints of the intersection segment in arguments <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code>.  If the answer is a single point, the values written to <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> will be the same.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">EPS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1E-9</span><span class="p">;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">pt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">EPS</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">EPS</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">line</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">line</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">line</span><span class="p">(</span><span class="n">pt</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="n">q</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">        </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">        </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">        </span><span class="n">norm</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">norm</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">EPS</span><span class="p">)</span>
+<span class="w">            </span><span class="n">a</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">dist</span><span class="p">(</span><span class="n">pt</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">double</span><span class="w"> </span><span class="nf">det</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">betw</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">EPS</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">EPS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">intersect_1d</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
+<span class="w">        </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">)</span>
+<span class="w">        </span><span class="n">swap</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">EPS</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">intersect</span><span class="p">(</span><span class="n">pt</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">pt</span><span class="o">&amp;</span><span class="w"> </span><span class="n">right</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">intersect_1d</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">intersect_1d</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">y</span><span class="p">))</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">line</span><span class="w"> </span><span class="n">m</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="n">line</span><span class="w"> </span><span class="n">n</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">zn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">zn</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">dist</span><span class="p">(</span><span class="n">c</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">EPS</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">dist</span><span class="p">(</span><span class="n">a</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">EPS</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">)</span>
+<span class="w">            </span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">c</span><span class="p">)</span>
+<span class="w">            </span><span class="n">swap</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+<span class="w">        </span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">        </span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">left</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">right</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">zn</span><span class="p">;</span>
+<span class="w">        </span><span class="n">left</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">right</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">det</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">zn</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">betw</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">left</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">betw</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">left</span><span class="p">.</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">               </span><span class="n">betw</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">left</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">betw</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">left</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="circle-line-intersection">
+<h2>Circle-Line Intersection<a class="headerlink" href="#circle-line-intersection" title="Link to this heading"></a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"> </span><span class="c1">// given as input</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">),</span><span class="w"> </span><span class="n">y0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">c</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">r</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">+</span><span class="n">EPS</span><span class="p">)</span>
+<span class="w">    </span><span class="n">puts</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;no points&quot;</span><span class="p">);</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">c</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">r</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EPS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">puts</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;1 point&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">y0</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">*</span><span class="n">r</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">c</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">mult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="p">));</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">ax</span><span class="p">,</span><span class="w"> </span><span class="n">ay</span><span class="p">,</span><span class="w"> </span><span class="n">bx</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mult</span><span class="p">;</span>
+<span class="w">    </span><span class="n">bx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mult</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mult</span><span class="p">;</span>
+<span class="w">    </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mult</span><span class="p">;</span>
+<span class="w">    </span><span class="n">puts</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;2 points&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ax</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ay</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">bx</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="circle-circle-intersection">
+<h2>Circle-Circle Intersection<a class="headerlink" href="#circle-circle-intersection" title="Link to this heading"></a></h2>
+<p>Let’s reduce this problem to the <a class="reference external" href="https://cp-algorithms.com/geometry/circle-line-intersection.html">circle-line intersection problem</a>.</p>
+<p>Assume first circle is at origin, subtract second circle equation by first circle equation.</p>
+<p>The number of common tangents to two circles can be <strong>0,1,2,3,4</strong> and <strong>infinite</strong>. Look at the images for different cases.</p>
+<p>Here, we won’t be considering <strong>degenerate</strong> cases, i.e <em>when the circles coincide (in this case they have infinitely many common  tangents), or one circle lies inside the other (in this case they have  no common tangents, or if the circles are tangent, there is one common  tangent).</em></p>
+<p>In most cases, two circles have <strong>four</strong> common tangents.</p>
+<p>If the circles <strong>are tangent</strong> , then they will have three common tangents, but this can be understood as a degenerate case: as if the two tangents coincided.</p>
+<p>Moreover, the algorithm described below will work in the case when  one or both circles have zero radius: in this case there will be,  respectively, two or one common tangent.</p>
+<p>Summing up, we will always look for <strong>four tangents</strong>  for all cases except infinite tangents case (The infinite tangents case  needs to be handled separately and it is not discussed here). In  degenerate cases, some of tangents will coincide, but nevertheless,  these cases will also fit into the big picture.</p>
+<section id="id3">
+<h3>Algorithm<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+</section>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+      Previous:
+    
+    <a href="data_struc.html">
+      
+      <span>Data Structures</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+      Next: 
+    <a href="graph.html">
+      <span>Graph Algo</span>
+      
+    </a>
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dp.html" class="btn btn-neutral float-left" title="DP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="graph.html" class="btn btn-neutral float-right" title="Graph Algo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

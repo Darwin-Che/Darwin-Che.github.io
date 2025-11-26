@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C language Notes &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Algorithms" href="../algo/index.html" />
+    <link rel="prev" title="MsgBox In-place Serializer in Rust" href="msgbox.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tech Posts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graphql-dataloader.html">Dataloader is Blocking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgbox.html">MsgBox In-place Serializer in Rust</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">C language Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#part-i-c">— Part I - C —</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preprocess">Preprocess</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#define">Define</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#include">Include</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-and-link">Compile and Link</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#file-types">File Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tools">Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gcc-options">Gcc Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#include-location-search-order">Include Location Search Order</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#main">Main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaration-vs-definition">Declaration vs Definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#external-variables-definition-vs-declaration">External Variables Definition vs Declaration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scope-linkage-storage-duration">Scope &amp; Linkage &amp; Storage Duration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scope">Scope</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storage-duration">Storage duration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linkage">Linkage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-types">Variable Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inititalizer">Inititalizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-parameter-types">Function Parameter Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rounding">Rounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#part-ii-posix">—  Part II - POSIX —</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-operations">File Operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">File Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operations">Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#descriptor-vs-stream">Descriptor vs Stream</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lifetime-of-a-file">Lifetime of a File</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#directory">Directory</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#memory">Memory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mmap">mmap</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#system-information">System Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signals">Signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lifetime-management">Lifetime management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#elf-extrainfo">ELF extrainfo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#typed-memory">Typed Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#potential-problems">Potential Problems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#part-iii-undefined-behavious">— Part III - Undefined Behavious —</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algo/index.html">Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tech Posts</a></li>
+      <li class="breadcrumb-item active">C language Notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/tech/notes_c.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="c-language-notes">
+<h1>C language Notes<a class="headerlink" href="#c-language-notes" title="Link to this heading"></a></h1>
+<section id="part-i-c">
+<h2>— Part I - C —<a class="headerlink" href="#part-i-c" title="Link to this heading"></a></h2>
+</section>
+<section id="preprocess">
+<h2>Preprocess<a class="headerlink" href="#preprocess" title="Link to this heading"></a></h2>
+<p>Happens on one translation unit</p>
+<section id="define">
+<h3>Define<a class="headerlink" href="#define" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define X Y</span>
+<span class="c1">#undef X</span>
+</pre></div>
+</div>
+<p>In this translation unit, replace all X with Y</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">E</span> <span class="o">-&gt;</span> <span class="n">preprocess</span> <span class="n">result</span>
+<span class="n">gcc</span> <span class="o">-</span><span class="n">g3</span> <span class="o">-&gt;</span> <span class="n">include</span> <span class="n">macros</span> <span class="ow">in</span> <span class="n">debugger</span>
+</pre></div>
+</div>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define ARCH_DIR x86_64</span>
+<span class="cp">#define ARCH(bar) &lt;ARCH_DIR/bar&gt;</span>
+
+<span class="cp">#include ARCH(blarg.h)</span>
+</pre></div>
+</div>
+<p>This also works if swtich line 1 and 2.</p>
+</section>
+<section id="include">
+<h3>Include<a class="headerlink" href="#include" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;foo.h&gt; -&gt; usually search in stdlib location</span>
+<span class="c1">#include &quot;foo.h&quot; -&gt; usually search in file directory, then search in stdlib location</span>
+</pre></div>
+</div>
+<p>read foo.h, process it, and inline it here</p>
+</section>
+</section>
+<section id="compile-and-link">
+<h2>Compile and Link<a class="headerlink" href="#compile-and-link" title="Link to this heading"></a></h2>
+<section id="file-types">
+<h3>File Types<a class="headerlink" href="#file-types" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">c</span> <span class="o">-&gt;</span> <span class="n">code</span> <span class="n">text</span>
+<span class="o">.</span><span class="n">o</span> <span class="o">-&gt;</span> <span class="nb">object</span> <span class="n">ELF</span>
+<span class="o">.</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">archive</span> 
+<span class="o">.</span><span class="n">so</span> <span class="o">-&gt;</span> <span class="n">dynamic</span> <span class="n">lib</span> <span class="n">ELF</span>
+</pre></div>
+</div>
+</section>
+<section id="tools">
+<h3>Tools<a class="headerlink" href="#tools" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Compiler</span> <span class="o">-&gt;</span> <span class="n">gcc</span>
+<span class="n">Static</span> <span class="n">Linker</span> 
+<span class="n">Dynamic</span> <span class="n">Linker</span> <span class="o">-&gt;</span> <span class="n">os</span>
+</pre></div>
+</div>
+</section>
+<section id="gcc-options">
+<h3>Gcc Options<a class="headerlink" href="#gcc-options" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">o</span> <span class="o">-&gt;</span> <span class="n">output</span> <span class="n">executable</span>
+<span class="o">-</span><span class="n">l</span> <span class="o">-&gt;</span> <span class="n">dynamic</span> <span class="n">linking</span>
+<span class="o">-</span><span class="n">I</span> <span class="o">-&gt;</span> <span class="n">inlclude</span> <span class="n">directory</span> 
+<span class="o">-</span><span class="n">D</span> <span class="o">-&gt;</span> <span class="n">define</span> <span class="n">preprocess</span> <span class="n">variables</span>
+<span class="o">-</span><span class="n">O2</span> <span class="o">-&gt;</span> <span class="n">optimization</span> <span class="n">level</span>
+
+</pre></div>
+</div>
+</section>
+<section id="include-location-search-order">
+<h3>Include Location Search Order<a class="headerlink" href="#include-location-search-order" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">I</span> <span class="nb">dir</span>
+<span class="o">-</span><span class="n">iquote</span> <span class="nb">dir</span>
+<span class="o">-</span><span class="n">isystem</span> <span class="nb">dir</span>
+<span class="o">-</span><span class="n">idirafter</span> <span class="nb">dir</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>For the quote form of the include directive, the directory of the current file is searched first.</p></li>
+<li><p>For the quote form of the include directive, the directories specified by -iquote options are searched in left-to-right order, as they appear on the command line.</p></li>
+<li><p>Directories specified with -I options are scanned in left-to-right order.</p></li>
+<li><p>Directories specified with -isystem options are scanned in left-to-right order.</p></li>
+<li><p>Standard system directories are scanned.</p></li>
+<li><p>Directories specified with -idirafter options are scanned in left-to-right order.</p></li>
+</ol>
+<p>Source : https://gnu.huihoo.org/gcc/gcc-9.3.0/gcc/Directory-Options.html#Directory-Options</p>
+</section>
+</section>
+<section id="main">
+<h2>Main<a class="headerlink" href="#main" title="Link to this heading"></a></h2>
+<p>Only two correct mains</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</pre></div>
+</div>
+</section>
+<section id="declaration-vs-definition">
+<h2>Declaration vs Definition<a class="headerlink" href="#declaration-vs-definition" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">declaration</span>
+<span class="n">extern</span> <span class="nb">int</span> <span class="n">a</span><span class="p">;</span>
+<span class="nb">int</span> <span class="n">foo</span><span class="p">(</span><span class="nb">int</span> <span class="n">b</span><span class="p">);</span>
+
+<span class="o">//</span> <span class="n">definition</span> <span class="p">:</span> <span class="n">allocates</span> <span class="n">storage</span> <span class="k">for</span> <span class="n">an</span> <span class="n">entity</span>
+<span class="nb">int</span> <span class="n">a</span><span class="p">;</span>
+<span class="nb">int</span> <span class="n">foo</span><span class="p">(</span><span class="nb">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>All definitions are implicitly declarations.</p>
+<p>A declaration is also a definition unless:</p>
+<ul class="simple">
+<li><p>declare function without a body</p></li>
+<li><p>contains the ‘extern’ keyword</p></li>
+<li><p>is a typedef</p></li>
+</ul>
+<p>An entity must be defined exactly once (in a translation unit if the entity has internal linkage; in the entire program if the entity has external linkage).</p>
+<section id="external-variables-definition-vs-declaration">
+<h3>External Variables Definition vs Declaration<a class="headerlink" href="#external-variables-definition-vs-declaration" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Inititializer == Yes</p>
+<p>Makes the statement a definition (and a declaration</p>
+</li>
+<li><p>Initializer == No &amp;&amp; extern == Yes</p>
+<p>Makes the statement a declaration only (with external linkage)</p>
+</li>
+<li><p>Initializer == No &amp;&amp; (extern == No or Static == Yes)</p>
+<p>A tentative definition (which acts as a definition with the initializer <code class="docutils literal notranslate"><span class="pre">=</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">=</span> <span class="pre">{0}</span></code> if there is no definition in the same translation unit)</p>
+</li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="c1">// A declaration with external linkage</span>
+<span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">  </span>
+
+<span class="w">  </span><span class="c1">// A definition with external linkage</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+
+<span class="w">  </span><span class="c1">// A definition with internal linkage</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">university</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;JMU&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// A tentative definition with external linkage</span>
+<span class="w">  </span><span class="kt">int</span><span class="w">  </span><span class="n">j</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// A tentative definition with internal linkage</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="scope-linkage-storage-duration">
+<h2>Scope &amp; Linkage &amp; Storage Duration<a class="headerlink" href="#scope-linkage-storage-duration" title="Link to this heading"></a></h2>
+<section id="scope">
+<h3>Scope<a class="headerlink" href="#scope" title="Link to this heading"></a></h3>
+<p>The portion of a translation unit (i.e., the code produced by the preprocessor from the source file and the header files) in which an identifier is visible (i.e., represents an entity)</p>
+<ul class="simple">
+<li><p>file</p></li>
+<li><p>block</p></li>
+<li><p>function prototype</p></li>
+</ul>
+</section>
+<section id="storage-duration">
+<h3>Storage duration<a class="headerlink" href="#storage-duration" title="Link to this heading"></a></h3>
+<p>The (minimum potential) lifetime of the storage containing an entity</p>
+<ul class="simple">
+<li><p>static</p></li>
+<li><p>automatic</p></li>
+<li><p>allocated</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p><strong>Block Scope</strong></p></th>
+<th class="head"><p>File Scope</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>None</p></td>
+<td><p>Automatic</p></td>
+<td><p>Static</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>Automatic</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">extern</span></code></p></td>
+<td><p>Static</p></td>
+<td><p>Static</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">register</span></code></p></td>
+<td><p>Automatic</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">static</span></code></p></td>
+<td><p>Static</p></td>
+<td><p>Static</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linkage">
+<h3>Linkage<a class="headerlink" href="#linkage" title="Link to this heading"></a></h3>
+<p>Determines whether declarations in different scopes can refer to the same entity</p>
+<ul>
+<li><p>No Linkage</p>
+<p>The entity can’t be referenced by name from anywhere else</p>
+</li>
+<li><p>Internal</p>
+<p>The entity can be referenced by names declared in the same scope and/or names declared in other scopes of the same translation unit</p>
+</li>
+<li><p>External</p>
+<p>The entity can also be referenced by name in other translation units</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Functions</p></th>
+<th class="head"><p><strong>Block Scope</strong></p></th>
+<th class="head"><p>File Scope</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>None</p></td>
+<td><p>External*</p></td>
+<td><p>External*</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">extern</span></code></p></td>
+<td><p>External*</p></td>
+<td><p>External*</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">register</span></code></p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">static</span></code></p></td>
+<td><p>N/A</p></td>
+<td><p>Internal</p></td>
+</tr>
+</tbody>
+</table>
+<p>Function definition and declaration must agree on Linkage Options.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variables</p></th>
+<th class="head"><p><strong>Block Scope</strong></p></th>
+<th class="head"><p>File Scope</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>None</p></td>
+<td><p>No Linkage</p></td>
+<td><p>External</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>No Linkage</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">extern</span></code></p></td>
+<td><p>External*</p></td>
+<td><p>External*</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">register</span></code></p></td>
+<td><p>No Linkage</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">static</span></code></p></td>
+<td><p>No Linkage</p></td>
+<td><p>Internal</p></td>
+</tr>
+</tbody>
+</table>
+<p>*External Linkages in the table are true unless it was previously (visibly) declared with internal linkage.</p>
+</section>
+</section>
+<section id="variable-types">
+<h2>Variable Types<a class="headerlink" href="#variable-types" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="n">c</span><span class="p">;</span>
+<span class="n">short</span> <span class="n">s</span><span class="p">;</span>
+<span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+<span class="n">long</span> <span class="n">l</span><span class="p">;</span>
+
+</pre></div>
+</div>
+</section>
+<section id="inititalizer">
+<h2>Inititalizer<a class="headerlink" href="#inititalizer" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{};</span> <span class="o">//</span> <span class="n">init</span> <span class="nb">all</span> <span class="n">to</span> <span class="n">zero</span>
+<span class="n">struct</span> <span class="n">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Michael&quot;</span><span class="p">};</span> <span class="o">//</span> <span class="n">init</span> <span class="n">name</span><span class="p">,</span> <span class="n">others</span> <span class="n">to</span> <span class="n">zero</span>
+</pre></div>
+</div>
+</section>
+<section id="function-parameter-types">
+<h2>Function Parameter Types<a class="headerlink" href="#function-parameter-types" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">foo</span><span class="p">()</span>
+	<span class="nb">int</span> <span class="n">a</span><span class="p">;</span>
+	<span class="nb">int</span> <span class="n">b</span><span class="p">;</span>
+	<span class="p">{</span>
+	 	<span class="n">reutrn</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>
+	<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foo</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">empty</span> <span class="n">identifier</span> <span class="nb">list</span>
+<span class="n">bar</span><span class="p">(</span><span class="n">void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">takes</span> <span class="n">no</span> <span class="n">parameters</span>
+
+<span class="n">foo</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">emit</span> <span class="n">warning</span>
+<span class="n">bar</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">err</span> <span class="n">too</span> <span class="n">many</span> <span class="n">arguments</span>
+</pre></div>
+</div>
+</section>
+<section id="rounding">
+<h2>Rounding<a class="headerlink" href="#rounding" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="k">for</span> <span class="n">x</span><span class="o">/</span><span class="n">n</span>
+<span class="n">x</span><span class="o">/</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="n">floor</span>
+<span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="n">ceil</span>
+<span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="n">nearest</span> <span class="n">integer</span>
+<span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nearest</span> <span class="n">multiple</span> <span class="n">of</span> <span class="n">n</span>
+</pre></div>
+</div>
+</section>
+<section id="part-ii-posix">
+<h2>—  Part II - POSIX —<a class="headerlink" href="#part-ii-posix" title="Link to this heading"></a></h2>
+</section>
+<section id="file-operations">
+<h2>File Operations<a class="headerlink" href="#file-operations" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>File Types<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Buffered and Unbuffered</p></li>
+<li><p>Regular File</p></li>
+<li><p>Directory</p></li>
+<li><p>Symbolic Link</p></li>
+<li><p>Named Pipe</p></li>
+<li><p>Socket</p></li>
+<li><p>Device/Special File</p>
+<ul>
+<li><p>Character device</p></li>
+<li><p>Block Device</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="operations">
+<h3>Operations<a class="headerlink" href="#operations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Open, read, write, close</p></li>
+<li><p>umask, fchmod, fchown</p></li>
+<li><p>fstat, fcntl</p></li>
+<li><p>lock</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;foo.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDONLY</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">num_read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">pBuf</span><span class="p">,</span><span class="w"> </span><span class="n">num_to_read</span><span class="p">);</span>
+<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Descriptor</p></th>
+<th class="head"><p>&lt;unistd.h&gt;</p></th>
+<th class="head"><p>&lt;stdio.h&gt;</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>#define STDIN_FILENO 0</p></td>
+<td><p>FILE* stdin</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>#define STDOUT_FILENO 1</p></td>
+<td><p>FILE* stdout</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>#define STDERR_FILENO 2</p></td>
+<td><p>FILE* stderr</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">fdopen</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">fileno</span><span class="p">(</span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="descriptor-vs-stream">
+<h3>Descriptor vs Stream<a class="headerlink" href="#descriptor-vs-stream" title="Link to this heading"></a></h3>
+<p>Stream automatically supports buffering input and output.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sync</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"> </span><span class="c1">// for all descriptors</span>
+<span class="n">syncfs</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="lifetime-of-a-file">
+<h2>Lifetime of a File<a class="headerlink" href="#lifetime-of-a-file" title="Link to this heading"></a></h2>
+<p>open vs unlink</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">creat</span><span class="p">(</span><span class="n">file_name</span><span class="p">);</span>
+<span class="c1">// same as</span>
+<span class="n">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_TRUNC</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">remove</span><span class="p">()</span>
+<span class="o">//</span> <span class="n">same</span> <span class="k">as</span>
+<span class="n">unlink</span><span class="p">()</span>
+<span class="o">//</span> <span class="n">ro</span>
+<span class="n">rmdir</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="directory">
+<h3>Directory<a class="headerlink" href="#directory" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">DIR</span><span class="o">*</span><span class="w"> </span><span class="nf">opendir</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">dir_path</span><span class="p">);</span>
+<span class="n">readdir</span><span class="p">()</span><span class="w"> </span><span class="c1">// get next directory entry</span>
+<span class="n">telldir</span><span class="p">()</span><span class="w"> </span><span class="c1">// current position</span>
+<span class="n">seekdir</span><span class="p">()</span><span class="w"> </span><span class="c1">// move position</span>
+<span class="n">rewinddir</span><span class="p">()</span><span class="w"> </span><span class="c1">// move position to beginning</span>
+<span class="n">closedir</span><span class="p">()</span><span class="w"> </span><span class="c1">// close</span>
+<span class="n">chdir</span><span class="p">()</span><span class="o">/</span><span class="n">pwd</span>
+<span class="n">rmdir</span>
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dirent.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="kt">DIR</span><span class="o">*</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opendir</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">dirent</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdir</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">de</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<span class="w">        </span><span class="n">stat</span><span class="p">(</span><span class="n">de</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">s</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%-20s %6.6o, %7ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">              </span><span class="n">de</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">st_mode</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">st_size</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">closedir</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="memory">
+<h2>Memory<a class="headerlink" href="#memory" title="Link to this heading"></a></h2>
+<p>Default on demand paging. Can override with <code class="docutils literal notranslate"><span class="pre">mlock</span></code>, to lock a contiguous part of VA in physical memory.</p>
+<section id="mmap">
+<h3>mmap<a class="headerlink" href="#mmap" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PROT_</span><span class="p">(</span><span class="n">READ</span><span class="o">|</span><span class="n">WRITE</span><span class="o">|</span><span class="n">EXEC</span><span class="o">|</span><span class="n">NONE</span><span class="p">)</span>
+<span class="n">MAP_PRIVATE</span>
+<span class="n">MAP_SHARED</span>
+<span class="n">MAP_ANONYMOUS</span>
+<span class="n">MAP_FIXED</span>
+
+</pre></div>
+</div>
+<p>changing contents of file</p>
+<p>Option 1: open, read, modify, write, close</p>
+<p>Option 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;log.txt&quot;</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">);</span>
+<span class="n">struct</span> <span class="n">stat</span> <span class="n">st</span><span class="p">;</span>
+<span class="n">fstat</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">st</span><span class="p">);</span>
+<span class="n">unsigned</span> <span class="n">file_size</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">st_size</span><span class="p">;</span>
+<span class="n">char</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">file_size</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">,</span> <span class="n">MPA_SHARED</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;e&#39;</span><span class="p">;</span>
+<span class="n">munmap</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">file_size</span><span class="p">);</span>
+<span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="system-information">
+<h2>System Information<a class="headerlink" href="#system-information" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sysconf</span>
+<span class="n">sysinfo</span>
+<span class="n">pathconf</span>
+<span class="p">(</span><span class="n">get</span><span class="o">|</span><span class="nb">set</span><span class="p">)</span><span class="n">_rlimit</span>
+<span class="n">confstr</span>
+<span class="n">getconf</span>
+</pre></div>
+</div>
+</section>
+<section id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Link to this heading"></a></h2>
+<p>Aka software interrupts</p>
+<p>synchronously - by code executing in process</p>
+<p>asynchronously - by process to process</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kill</span> <span class="o">-</span><span class="n">s</span> <span class="mi">0</span> <span class="o">&lt;</span><span class="n">pid</span><span class="o">&gt;</span> <span class="o">//</span> <span class="n">check</span> <span class="k">if</span> <span class="n">pid</span> <span class="ow">is</span> <span class="n">valid</span> <span class="n">pid</span>
+</pre></div>
+</div>
+</section>
+<section id="lifetime-management">
+<h2>Lifetime management<a class="headerlink" href="#lifetime-management" title="Link to this heading"></a></h2>
+<p>Automatic variables</p>
+<p>atexit functions</p>
+<p>pthread_once</p>
+<p>init mutex</p>
+<p>static variables</p>
+<p>__constructor__</p>
+</section>
+<section id="elf-extrainfo">
+<h2>ELF extrainfo<a class="headerlink" href="#elf-extrainfo" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>header</p></li>
+<li><p>Segment mapping</p></li>
+<li><p>Symbol table</p></li>
+</ul>
+<p>DWARF debug info</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">strip</span></code> to remove those debug info, significantly reduce executable size</p>
+</section>
+<section id="typed-memory">
+<h2>Typed Memory<a class="headerlink" href="#typed-memory" title="Link to this heading"></a></h2>
+</section>
+<section id="potential-problems">
+<h2>Potential Problems<a class="headerlink" href="#potential-problems" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>forgot to close files (not flushed to disk)</p></li>
+<li><p>fork bomb</p></li>
+<li><p>session leader</p></li>
+</ul>
+</section>
+<section id="part-iii-undefined-behavious">
+<h2>— Part III - Undefined Behavious —<a class="headerlink" href="#part-iii-undefined-behavious" title="Link to this heading"></a></h2>
+<p>Reference : https://blog.regehr.org/archives/213</p>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+      Previous:
+    
+    <a href="../algo/algebra.html">
+      
+      <span>Algebra Algorithms</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+      Next: 
+    <a href="../algo/combinatorics.html">
+      <span>Combinatorics Algorithms</span>
+      
+    </a>
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="msgbox.html" class="btn btn-neutral float-left" title="MsgBox In-place Serializer in Rust" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../algo/index.html" class="btn btn-neutral float-right" title="Algorithms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

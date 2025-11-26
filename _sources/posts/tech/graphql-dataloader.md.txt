@@ -104,7 +104,7 @@ end
 Here are two graphs illustrating the *order* of the resolvers in Absinthe resolution model.
 The left one is without Dataloader, the right one is with Dataloader.
 
-| ![Left image](../img/graphql-dataloader/absinthe_resolution_naive.drawio.png) | ![Right image](../img/graphql-dataloader/absinthe_resolution_dataloader.drawio.png) |
+| ![Left image](./img/graphql-dataloader/absinthe_resolution_naive.drawio.png) | ![Right image](./img/graphql-dataloader/absinthe_resolution_dataloader.drawio.png) |
 |:--:|:--:|
 | *Without Dataloader* | *Dataloaded Teams* |
 
@@ -140,7 +140,7 @@ end
 
 This is real nonblocking IO. Here's the execution timing graph (compared to dataloader)
 
-| ![Left image](../img/graphql-dataloader/absinthe_resolution_async.drawio.png) | ![Right image](../img/graphql-dataloader/absinthe_resolution_dataloader.drawio.png) |
+| ![Left image](./img/graphql-dataloader/absinthe_resolution_async.drawio.png) | ![Right image](./img/graphql-dataloader/absinthe_resolution_dataloader.drawio.png) |
 |:--:|:--:|
 | *Async* | *Dataloader* |
 
