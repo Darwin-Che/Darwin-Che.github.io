@@ -15,7 +15,6 @@ Reach me at `chezhaocheng[AT]outlook.com`.
    :caption: Blog
 
    posts/tech/index
-   posts/algo/index
    posts/recap/index
 
    

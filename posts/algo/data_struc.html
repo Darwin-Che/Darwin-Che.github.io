@@ -6,23 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Structures &mdash; Zhaocheng Che&#39;s Blog 2025-11-26 documentation</title>
+  <title>Data Structures &mdash; Zhaocheng Che&#39;s Blog 2025-12-06 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=3d3e70f0"></script>
+      <script src="../../_static/documentation_options.js?v=c3eb9456"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="DP" href="dp.html" />
-    <link rel="prev" title="Combinatorics Algorithms" href="combinatorics.html" />     
+    <link rel="search" title="Search" href="../../search.html" />     
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,81 +43,8 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Tech Posts</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Algorithms</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="algebra.html">Algebra Algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combinatorics.html">Combinatorics Algorithms</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Structures</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#minimum-stack-minimum-queue">Minimum stack / Minimum queue</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#stack-modification">Stack modification</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#queue-modification-method-1">Queue modification (method 1)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#queue-modification-method-2">Queue modification (method 2)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#queue-modification-method-3">Queue modification (method 3)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#finding-the-minimum-for-all-subarrays-of-fixed-length">Finding the minimum for all subarrays of fixed length</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#sparse-table">Sparse Table</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#precomputation">Precomputation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#range-sum-queries">Range Sum Queries</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#range-minimum-queries-rmq">Range Minimum Queries (RMQ)</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#disjoint-set-union">Disjoint Set Union</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#naive-implementation-o-n">Naive implementation <span class="math notranslate nohighlight">\(O(n)\)</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#path-compression-optimization-o-log-n">Path compression optimization <span class="math notranslate nohighlight">\(O(\log n)\)</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#union-by-size-rank-o-log-n">Union by size / rank <span class="math notranslate nohighlight">\(O(\log n)\)</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#linking-by-index-coin-flip-linking">Linking by index / coin-flip linking</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#applications">Applications</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#fenwick-tree">Fenwick Tree</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#definition">Definition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#one-based-indexing-approach">One-based indexing approach</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#range-operations">Range operations</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#sqrt-decomposition">Sqrt Decomposition</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mo-s-algorithm">Mo’s algorithm</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#segment-tree">Segment Tree</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#simplest-form">Simplest Form</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#more-complex-queries">More complex queries</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#treap">Treap</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">Implementation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#implicit-treaps">Implicit Treaps</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#sqrt-tree">Sqrt Tree</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#optimizing-the-query-complexity">Optimizing the query complexity</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#updating-a-single-element">Updating a single element</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#randomized-heap">Randomized Heap</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#operations">Operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">Complexity</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#deleting-from-a-data-structure-in-o-t-n-logn">Deleting from a data structure in <em>O</em>(<em>T</em>(<em>n</em>)log<em>n</em>)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#algorithm">Algorithm</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="dp.html">DP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geo_1.html">Geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graph.html">Graph Algo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="linalg.html">Linear Algebra Algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mono_queue.html">Monotonic Queue and similar ideas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="string.html">String Processing</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
 </ul>
 
@@ -137,7 +62,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Algorithms</a></li>
       <li class="breadcrumb-item active">Data Structures</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/posts/algo/data_struc.md.txt" rel="nofollow"> View page source</a>
@@ -1555,10 +1479,7 @@
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="combinatorics.html" class="btn btn-neutral float-left" title="Combinatorics Algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dp.html" class="btn btn-neutral float-right" title="DP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
