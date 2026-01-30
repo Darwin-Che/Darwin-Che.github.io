@@ -3,9 +3,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Posts tagged rust &mdash; Zhaocheng Che&#39;s Blog 2026-01-30 documentation</title>
+  <title>Notes derived from reading the Understanding Linux Kernel book &mdash; Zhaocheng Che&#39;s Blog 2026-01-30 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
@@ -17,14 +18,7 @@
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />   
-<link
-  rel="alternate"
-  type="application/atom+xml"
-  href="../../blog/atom.xml"
-  title="Posts tagged rust"
-/>
-  
+    <link rel="search" title="Search" href="../../search.html" />     
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,8 +42,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../posts/tech/index.html">Tech Posts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../posts/recap/index.html">Recap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Tech Posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
 </ul>
 
         </div>
@@ -66,74 +60,38 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Posts tagged rust</li>
+      <li class="breadcrumb-item active">Notes derived from reading the Understanding Linux Kernel book</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/tech/kernel_notes_1.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-              
-<div class="section ablog__collection">
-  <h1>
-    
-    <span
-      >Posts tagged  rust 
-    </span>
-  </h1>
-   
-  <div class="section ablog-post">
-    <h2 class="ablog-post-title">
-      <a href="../../posts/tech/msgbox.html">MsgBox In-place Serializer in Rust</a>
-    </h2>
-    <ul class="ablog-archive">
-      <li>
-         
-        <span>01 April 2024</span>
-        
-      </li>
-      <div class="ablog-sidebar-item ablog__postcard2">
-   
-  <li id="ablog-sidebar-item author ablog__author">
-    <span>
-       Author: 
-    </span>
-     
-    <a href="../author/myself.html">myself</a>
-      
-  </li>
-     
-  <li id="ablog-sidebar-item category ablog__category">
-    <span>
-       Category: 
-    </span>
-     
-    <a href="../category/blog.html">Blog</a>
-      
-  </li>
-   
-  <li id="ablog-sidebar-item tags ablog__tags">
-    <span>
-        Tags:  
-    </span>
-     
-    <a href="#">rust</a>
-        
-    <a href="trainsos.html">trainsos</a>
-      
-  </li>
-   
-</div>
-    </ul>
-    <p class="ablog-post-excerpt"><p>During my course work for CS452 at the University of Waterloo, in a group of two, we developed our own bare metal real time operating system in C. Our OS runs on the a raspberry pi 4b, which controls a toy train set which receives train/switch command and sends sensor signal over RS232.</p>
-</p>
+              <section class="tex2jax_ignore mathjax_ignore" id="notes-derived-from-reading-the-understanding-linux-kernel-book">
+<h1>Notes derived from reading the Understanding Linux Kernel book<a class="headerlink" href="#notes-derived-from-reading-the-understanding-linux-kernel-book" title="Link to this heading"></a></h1>
+<p>During interrupt handler, because there’s no process context,
+sleep is not possible for both upper half and bottom half (softirq and tasklet).
+Therefore, spinlock is the only mechanism.
+The book describe that spinlock is not reentrant, an execution thread can
+deadlock itself if not careful.
+The book points out therefore using spinlock itself is often not enough
+by itself. Things can go wrong if hardware interrupt happens when the spinlock
+is held. The interrupt handler might need the spinlock to insert to a queue
+for example, and thus deadlock. So whenever using a spinlock, consider if this
+spinlock is used in the any interrupt context, if so, disable interrupt to
+avoid deadlock. The kernel provides a shortcut called <code class="docutils literal notranslate"><span class="pre">spin_lock_irqsave</span></code>
+and <code class="docutils literal notranslate"><span class="pre">spin_unlock_irqrestore</span></code>.</p>
+<p>It was also mentioned that bottom halfs can actually preempt process execution.
+So <code class="docutils literal notranslate"><span class="pre">spin_lock_bh</span></code> sometimes is needed.</p>
+<hr class="docutils" />
+<p>On Page 215, there are <code class="docutils literal notranslate"><span class="pre">time_after</span></code> and <code class="docutils literal notranslate"><span class="pre">time_before</span></code> macros to resolve
+jiffies overflow and wrap.
+I still don’t quite understand how those macro solve the issue.</p>
+</section>
 
-    <p class="ablog-post-expand">
-      <a href="../../posts/tech/msgbox.html"><em>Read more ...</em></a>
-    </p>
-    <hr />
-  </div>
+<div class="section ablog__blog_comments">
    
 </div>
 

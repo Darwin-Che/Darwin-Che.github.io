@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Common Commands &mdash; Zhaocheng Che&#39;s Blog 2026-01-30 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=fbbfc274"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Tech Posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Common Commands</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/tech/lfx-mentorship-1.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="common-commands">
+<h1>Common Commands<a class="headerlink" href="#common-commands" title="Link to this heading"></a></h1>
+<p>Generate Patches</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="nb">format</span><span class="o">-</span><span class="n">patch</span> <span class="o">-</span><span class="mi">1</span> <span class="o">--</span><span class="n">pretty</span><span class="o">=</span><span class="n">fuller</span> <span class="mi">3</span><span class="n">a38e874d70b</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">checkpatch.pl</span></code> to check format style of patch.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="nb">format</span><span class="o">-</span><span class="n">patch</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;</span><span class="n">commit</span> <span class="n">ID</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">to</span><span class="o">=</span><span class="n">maintainer1</span> <span class="o">--</span><span class="n">to</span><span class="o">=</span><span class="n">maintainer2</span> <span class="o">--</span><span class="n">cc</span><span class="o">=</span><span class="n">maillist1</span> <span class="o">--</span><span class="n">cc</span><span class="o">=</span><span class="n">maillist2</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">send</span><span class="o">-</span><span class="n">email</span> <span class="o">&lt;</span><span class="n">patch_file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The right place for the version history is after the “—” below the Signed-off-by tag and the start of the changed file list, as shown in the screenshot below. Everything between the Signed-off-by and the diff is just for the reviewers and will not be included in the commit. Please don’t include version history in the commit log.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">apply</span> <span class="o">--</span><span class="n">index</span> <span class="n">file</span><span class="o">.</span><span class="n">patch</span>
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="setup-env">
+<h1>Setup Env<a class="headerlink" href="#setup-env" title="Link to this heading"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">vim</span> <span class="n">git</span> <span class="n">cscope</span> <span class="n">libncurses</span><span class="o">-</span><span class="n">dev</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span> <span class="n">bison</span> <span class="n">flex</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">git</span><span class="o">-</span><span class="n">email</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">bindgen</span> <span class="n">pahole</span> <span class="n">jfsutils</span> <span class="n">xfsprogs</span> <span class="n">btrfs</span><span class="o">-</span><span class="n">progs</span> <span class="n">pcmciautils</span> <span class="n">quota</span> <span class="n">ppp</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">nfs</span><span class="o">-</span><span class="n">common</span> <span class="n">grub2</span><span class="o">-</span><span class="n">common</span> <span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">tools</span> <span class="k">global</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libelf</span><span class="o">-</span><span class="n">dev</span> <span class="n">libdw</span><span class="o">-</span><span class="n">dev</span> <span class="n">zlib1g</span><span class="o">-</span><span class="n">dev</span> <span class="n">pkg</span><span class="o">-</span><span class="n">config</span> <span class="n">clang</span> <span class="n">llvm</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">cpio</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">codespell</span>
+</pre></div>
+</div>
+<p>If you already have a .git/hooks/post-commit file, move it to .git/hooks/post-commit.sample. git will not execute files with the .sample extension. Then, edit the .git/hooks/post-commit file to contain only the following lines:</p>
+<p>#!/bin/bash
+exec git show –format=email HEAD | ./scripts/checkpatch.pl –strict –codespell</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="make-sure-the-file-is-executable">
+<h1>Make sure the file is executable:<a class="headerlink" href="#make-sure-the-file-is-executable" title="Link to this heading"></a></h1>
+<p>chmod a+x .git/hooks/post-commit</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="compilation">
+<h1>Compilation<a class="headerlink" href="#compilation" title="Link to this heading"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">x86_64_defconfig</span>
+<span class="n">make</span> <span class="n">kvm_guest</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>Compile a module
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">M=drivers/media/test-drivers/vimc</span></code></p>
+<p>Check
+<code class="docutils literal notranslate"><span class="pre">drivers/media/test-drivers/vimc/Kconfig</span></code>
+for dependency and config option</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="busybox-settings">
+<h1>Busybox settings<a class="headerlink" href="#busybox-settings" title="Link to this heading"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">defconfig</span>
+<span class="n">make</span> <span class="n">menuconfig</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Enabled static binary</p></li>
+<li><p>Disable tc</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">initramfs</span>
+<span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="p">{</span><span class="nb">bin</span><span class="p">,</span><span class="n">sbin</span><span class="p">,</span><span class="n">proc</span><span class="p">,</span><span class="n">sys</span><span class="p">,</span><span class="n">dev</span><span class="p">}</span>
+<span class="n">cp</span> <span class="n">busybox</span> <span class="nb">bin</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Init</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">proc</span> <span class="n">none</span> <span class="o">/</span><span class="n">proc</span>
+<span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">sysfs</span> <span class="n">none</span> <span class="o">/</span><span class="n">sys</span>
+<span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">devtmpfs</span> <span class="n">none</span> <span class="o">/</span><span class="n">dev</span>
+
+<span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+<span class="n">exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">initramfs</span>
+<span class="n">find</span> <span class="o">.</span> <span class="o">|</span> <span class="n">cpio</span> <span class="o">-</span><span class="n">o</span> <span class="o">-</span><span class="n">H</span> <span class="n">newc</span> <span class="o">|</span> <span class="n">gzip</span> <span class="o">&gt;</span> <span class="o">../</span><span class="n">initramfs</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="qemu-notes">
+<h1>QEMU notes<a class="headerlink" href="#qemu-notes" title="Link to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Keys</p></th>
+<th class="head"><p>What it does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Ctrl+A</span> <span class="pre">H</span></code></p></td>
+<td><p>Help (shows all shortcuts)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Ctrl+A</span> <span class="pre">X</span></code></p></td>
+<td><p>Exit QEMU</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Ctrl+A</span> <span class="pre">C</span></code></p></td>
+<td><p>Open QEMU monitor</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Ctrl+A</span> <span class="pre">R</span></code></p></td>
+<td><p>Reset VM</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Ctrl+A</span> <span class="pre">P</span></code></p></td>
+<td><p>Pause</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Ctrl+A</span> <span class="pre">S</span></code></p></td>
+<td><p>Resume</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qemu</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">x86_64</span> \
+  <span class="o">-</span><span class="n">kernel</span> <span class="n">stable</span><span class="o">/</span><span class="n">arch</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">bzImage</span> \
+  <span class="o">-</span><span class="n">initrd</span> <span class="n">initramfs</span><span class="o">.</span><span class="n">gz</span> \
+  <span class="o">-</span><span class="n">append</span> <span class="s2">&quot;console=ttyS0&quot;</span> \
+  <span class="o">-</span><span class="n">nographic</span> \
+  <span class="o">-</span><span class="n">machine</span> <span class="nb">type</span><span class="o">=</span><span class="n">pc</span><span class="p">,</span><span class="n">accel</span><span class="o">=</span><span class="n">kvm</span> \
+  <span class="o">-</span><span class="n">cpu</span> <span class="n">host</span> \
+  <span class="o">-</span><span class="n">m</span> <span class="mi">2048</span> \
+  <span class="o">-</span><span class="n">smp</span> <span class="n">cores</span><span class="o">=</span><span class="mi">2</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">qemu</span><span class="o">-</span><span class="n">system</span> <span class="n">qemu</span><span class="o">-</span><span class="n">utils</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qemu</span><span class="o">-</span><span class="n">img</span> <span class="n">create</span> \
+<span class="o">-</span><span class="n">f</span> <span class="n">qcow2</span> \
+<span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">d</span><span class="o">/</span><span class="n">mintVM</span><span class="o">/</span><span class="n">mintVM</span><span class="o">.</span><span class="n">qcow2</span> <span class="mi">20</span><span class="n">G</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qemu</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">x86_64</span> \
+<span class="o">-</span><span class="n">m</span> <span class="mi">16384</span> \
+<span class="o">-</span><span class="n">smp</span> <span class="n">cores</span><span class="o">=</span><span class="mi">8</span> \
+<span class="o">-</span><span class="n">cpu</span> <span class="n">host</span> \
+<span class="o">-</span><span class="n">machine</span> <span class="nb">type</span><span class="o">=</span><span class="n">pc</span><span class="p">,</span><span class="n">accel</span><span class="o">=</span><span class="n">kvm</span> \
+<span class="o">-</span><span class="n">hda</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">d</span><span class="o">/</span><span class="n">mintVM</span><span class="o">/</span><span class="n">mintVM</span><span class="o">.</span><span class="n">qcow2</span> \
+<span class="o">-</span><span class="n">cdrom</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">d</span><span class="o">/</span><span class="n">isos</span><span class="o">/</span><span class="n">linuxmint</span><span class="o">.</span><span class="n">iso</span> \
+<span class="o">-</span><span class="n">boot</span> <span class="n">d</span> \
+<span class="o">-</span><span class="n">vga</span> <span class="n">virtio</span> \
+<span class="o">-</span><span class="n">usb</span> <span class="o">-</span><span class="n">device</span> <span class="n">usb</span><span class="o">-</span><span class="n">mouse</span> <span class="o">-</span><span class="n">device</span> <span class="n">usb</span><span class="o">-</span><span class="n">kbd</span>
+
+<span class="n">qemu</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">x86_64</span> \
+<span class="o">-</span><span class="n">m</span> <span class="mi">16384</span> \
+<span class="o">-</span><span class="n">smp</span> <span class="n">cores</span><span class="o">=</span><span class="mi">8</span> \
+<span class="o">-</span><span class="n">cpu</span> <span class="n">host</span> \
+<span class="o">-</span><span class="n">machine</span> <span class="nb">type</span><span class="o">=</span><span class="n">pc</span><span class="p">,</span><span class="n">accel</span><span class="o">=</span><span class="n">kvm</span> \
+<span class="o">-</span><span class="n">hda</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">d</span><span class="o">/</span><span class="n">mintVM</span><span class="o">/</span><span class="n">mintVM</span><span class="o">.</span><span class="n">qcow2</span> \
+<span class="o">-</span><span class="n">boot</span> <span class="n">c</span> \
+<span class="o">-</span><span class="n">vga</span> <span class="n">virtio</span> \
+<span class="o">-</span><span class="n">usb</span> <span class="o">-</span><span class="n">device</span> <span class="n">usb</span><span class="o">-</span><span class="n">mouse</span> <span class="o">-</span><span class="n">device</span> <span class="n">usb</span><span class="o">-</span><span class="n">kbd</span>
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="grub">
+<h1>Grub<a class="headerlink" href="#grub" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code></p>
+<p>Enable printing early boot messages to vga using the earlyprink=vga kernel boot option
+Increase the GRUB_TIMEOUT value to 30 seconds, so grub pauses in menu allowing time to choose the kernel to boot from the grub menu, and comment out GRUB_TIMEOUT_STYLE=hidden</p>
+<p>GRUB_CMDLINE_LINUX=”earlyprink=vga”
+#GRUB_TIMEOUT_STYLE=hidden
+GRUB_TIMEOUT=30</p>
+<p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h1>
+<p>Configure as a module:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Configure CONFIG_USB_VIDEO_CLASS=m
+Recompile your kernel and install. Please note that you don&#39;t have to reboot your system. You can load your newly installed module.
+</pre></div>
+</div>
+<p>Load module:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo modprobe uvcvideo
+Once you load the module, let&#39;s check if you see your message.
+Run dmesg | less and search for &quot;I changed&quot;. Do you see the message?
+Run lsmod | grep uvcvideo. Do you see the module?
+</pre></div>
+</div>
+<p>Unload module:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo rmmod uvcvideo
+Check dmesg for any messages about the uvcvideo module removal.
+Run lsmod | grep uvcvideo. Do you see the module?
+</pre></div>
+</div>
+<p>Configure Built-in:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Configure CONFIG_USB_VIDEO_CLASS=y
+Recompile your kernel, install, and reboot the system into the newly installed kernel.
+Run dmesg | less and search for &quot;I changed&quot;. Do you see the message?
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="patch-checklist">
+<h1>Patch checklist<a class="headerlink" href="#patch-checklist" title="Link to this heading"></a></h1>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Run scripts/checkpatch.pl before sending the patch. Note that checkpatch.pl might suggest unnecessary changes! Use your best judgment when deciding whether it makes sense to make the change checkpatch.pl suggests. The end goal is for the code to be more readable. If checkpatch.pl suggests a change and you think the end result is not more readable, don&#39;t make the change. For example, if a line is 81 characters long, but breaking it makes the resulting code look ugly, don&#39;t break that line.
+Compile and test your change.
+Document your change and include relevant testing details and results of that testing.
+Signed-off-by should be the last tag.
+As a general rule, don&#39;t include change lines in the commit log.
+Remember that good patches get accepted quicker. It is important to understand how to create good patches.
+Copy mailing lists and maintainers/developers suggested by scripts/get_maintainer.pl.
+Be patient and wait at least one week before requesting comments. During busy periods such as the merge windows, it could take longer than a week.
+Always thank the reviewers for their feedback and address them.
+Don’t hesitate to ask a clarifying question if you don’t understand the comment.
+When working on a patch based on a suggested idea, give credit using the Suggested-by tag. Other tags used for giving credit are Tested-by, Reported-by.
+Remember that the reviewers help improve code. Don’t take it personally and handle the feedback gracefully. Please don’t top-post when responding to emails. Responses should be inlined.
+Keep in mind that the community is not obligated to accept your patch. Patches are pulled, not pushed. Always give a reason for the maintainer to take your patch.
+Be patient and be ready to make changes and work with the reviewers. It could take multiple versions before your patch gets accepted. It is okay to disagree with maintainers and reviewers. Please don&#39;t ignore a review because you disagree with it. Present your reasons for disagreeing and supporting technical data such as benchmarks and other improvements.
+In general, getting responses and comments is a good sign that the community likes the patch and wants to see it improved. Silence is what you want to be concerned about. If you don&#39;t hear back from the maintainer after a week, feel free to either send the patch again, or send a gentle &quot;ping&quot; - something like &quot;Hi, I know you are busy, but have you found time to look at my patch?&quot;
+Expect to receive comments and feedback at any time during the review process.
+Stay engaged and be ready to fix problems, if any, after the patch gets accepted into linux-next for integration into the mainline. Kernel build and Continuous Integration (CI) bots and rings usually find problems.
+When a patch gets accepted, you will either see an email from the maintainer or an automated patch accepted email with information on which tree it has been applied to, and some estimate on when you can expect to see it in the mainline kernel. Not all maintainers might send an email when the patch gets merged. The patch could stay in linux-next for integration until the next merge window, before it gets into Linus&#39;s tree. Unless the patch is an actual fix to a bug in Linus&#39;s tree, in which case, it may go directly into his tree.
+Sometimes you need to send multiple related patches. This is useful for grouping, say, to group driver clean-up patches for one particular driver into a set, or grouping patches that are part of a new feature into one set. git format-patch -2 -s --cover-letter --thread --subject-prefix=&quot;PATCH v3&quot; --to= “name” --cc=” name” will create a threaded patch series that includes the top two commits and generated cover letter template. It is a good practice to send a cover letter for a patch series.
+Including patch series version history in the cover letter will help reviewers get a quick snapshot of changes from version to version.
+When a maintainer accepts a patch, the maintainer assumes maintenance responsibility for that patch. As a result, maintainers have decision-making power on how to manage patch flow into their sub-system(s), and they also have individual preferences. Be prepared for maintainer-to-maintainer differences in commit log content and sub-system specific coding styles.
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="tests">
+<h1>Tests<a class="headerlink" href="#tests" title="Link to this heading"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dmesg</span> <span class="o">-</span><span class="n">t</span> <span class="o">-</span><span class="n">l</span> <span class="n">emerg</span>
+<span class="n">dmesg</span> <span class="o">-</span><span class="n">t</span> <span class="o">-</span><span class="n">l</span> <span class="n">crit</span>
+<span class="n">dmesg</span> <span class="o">-</span><span class="n">t</span> <span class="o">-</span><span class="n">l</span> <span class="n">alert</span>
+<span class="n">dmesg</span> <span class="o">-</span><span class="n">t</span> <span class="o">-</span><span class="n">l</span> <span class="n">err</span>
+<span class="n">dmesg</span> <span class="o">-</span><span class="n">t</span> <span class="o">-</span><span class="n">l</span> <span class="n">warn</span>
+<span class="n">dmesg</span> <span class="o">-</span><span class="n">t</span> <span class="o">-</span><span class="n">k</span>
+<span class="n">dmesg</span> <span class="o">-</span><span class="n">t</span>
+</pre></div>
+</div>
+<p>Stress test by compiling the kernel (multiple in parallel)
+<code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">make</span> <span class="pre">all</span></code></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="debug">
+<h1>Debug<a class="headerlink" href="#debug" title="Link to this heading"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">grep</span> <span class="o">-</span><span class="n">r</span> <span class="n">DEBUG</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">Kconfig</span>
+
+<span class="n">CONFIG_KASAN</span>
+<span class="n">CONFIG_KMSAN</span>
+<span class="n">CONFIG_UBSAN</span>
+<span class="n">CONFIG_LOCKDEP</span>
+<span class="n">CONFIG_PROVE_LOCKING</span>
+<span class="n">CONFIG_LOCKUP_DETECTOR</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scripts</span><span class="o">/</span><span class="n">decode_stacktrace</span><span class="o">.</span><span class="n">sh</span> <span class="o">./</span><span class="n">vmlinux</span> <span class="o">&lt;</span> <span class="n">panic_trace</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Available events to trace</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">cat</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">tracing</span><span class="o">/</span><span class="n">available_events</span>
+
+<span class="n">Enable</span> <span class="nb">all</span> <span class="n">events</span><span class="p">:</span>
+      <span class="n">cd</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">tracing</span><span class="o">/</span><span class="n">events</span>
+      <span class="n">echo</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">enable</span> 
+
+<span class="n">Enable</span> <span class="n">the</span> <span class="n">skb</span> <span class="n">events</span><span class="p">:</span>
+      <span class="n">cd</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">tracing</span><span class="o">/</span><span class="n">events</span><span class="o">/</span><span class="n">skb</span>
+      <span class="n">echo</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">enable</span> 
+
+<span class="n">sudo</span> <span class="n">cat</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">tracing</span><span class="o">/</span><span class="n">trace</span>
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="patching-the-release">
+<h1>Patching the release<a class="headerlink" href="#patching-the-release" title="Link to this heading"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>stable_checkout.sh
+     #!/bin/bash
+     ## SPDX-License-Identifier: GPL-2.0
+     # Copyright(c) Shuah Khan &lt;skhan@linuxfoundation.org&gt;
+     #
+     # License: GPLv2
+     # Example usage: stable_checkout.sh &lt;stable-release-version e.g 5.2&gt;
+     mkdir -p stable
+     cd stable
+     git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux_$1_stable
+     cd linux_$1_stable
+     git checkout linux-$1.y
+     #cp /boot/ .config # Replace &lt;currentconfig&gt; Here with the config file you want to use​
+
+pre_compile_setup.sh
+     #!/bin/bash
+     ## SPDX-License-Identifier: GPL-2.0
+     # Copyright(c) Shuah Khan &lt;skhan@linuxfoundation.org&gt;
+     #
+     # License: GPLv2
+     # Example usage: pre_compile_setup.sh 5.2.11 1 5
+     # Arg1 is the stable release version which is typically 5.2.x
+     # Arg2 is the 1 for rc1 or 2 for rc2
+     # Arg3 is 4.x or 5.x used to call wget to get the patch file
+     echo Testing patch-$1-rc$2
+     wget https://www.kernel.org/pub/linux/kernel/v$3.x/stable-review/patch-$1-rc$2.gz ;
+     git reset --hard
+     make clean
+     git pull
+     gunzip patch-$1-rc$2.gz
+     git apply --index patch-$1-rc$2
+     echo &quot;Patch-$1-rc$2 applied&quot;
+     head Makefile
+     make -j2 all
+     rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
+     su -c &quot;make modules_install install&quot;
+     echo Ready for reboot test of Linux-$1-$2
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dmesg_checks.sh
+     # !/bin/bash
+     #
+     #SPDX-License-Identifier: GPL-2.0
+     # Copyright(c) Shuah Khan &lt;skhan@linuxfoundation.org&gt;
+     #
+     # License: GPLv2​
+
+          if [ &quot;$1&quot; == &quot;&quot; ]; then
+             echo &quot;$0 &quot; &lt;old name -r&gt;
+             exit -1
+     fi
+
+release=`uname -r`
+echo &quot;Start dmesg regression check for $release&quot; &gt; dmesg_checks_results
+
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+dmesg -t -l emerg &gt; $release.dmesg_emerg
+echo &quot;dmesg emergency regressions&quot; &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+diff $1.dmesg_emerg $release.dmesg_emerg &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+dmesg -t -l crit &gt; $release.dmesg_crit
+echo &quot;dmesg critical regressions&quot; &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+diff $1.dmesg_crit $release.dmesg_crit &gt;&gt; dmesg_checks_results 
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+dmesg -t -l alert &gt; $release.dmesg_alert
+echo &quot;dmesg alert regressions&quot; &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+diff $1.dmesg_alert $release.dmesg_alert &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+dmesg -t -l err &gt; $release.dmesg_err
+echo &quot;dmesg err regressions&quot; &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+diff $1.dmesg_err $release.dmesg_err &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+dmesg -t -l warn &gt; $release.dmesg_warn
+echo &quot;dmesg warn regressions&quot; &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+diff $1.dmesg_warn $release.dmesg_warn &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+dmesg -t &gt; $release.dmesg
+echo &quot;dmesg regressions&quot; &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+diff $1.dmesg $release.dmesg &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+dmesg -t &gt; $release.dmesg_kern
+echo &quot;dmesg_kern regressions&quot; &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+diff $1.dmesg_kern $release.dmesg_kern &gt;&gt; dmesg_checks_results
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+echo &quot;--------------------------&quot; &gt;&gt; dmesg_checks_results
+
+echo &quot;End dmesg regression check for $release&quot; &gt;&gt; dmesg_checks_results
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="docs">
+<h1>docs<a class="headerlink" href="#docs" title="Link to this heading"></a></h1>
+<p>make htmldocs</p>
+<p>make htmldocs &gt; doc_make.log 2&gt;&amp;1</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="follow-up">
+<h1>Follow up<a class="headerlink" href="#follow-up" title="Link to this heading"></a></h1>
+<p>Join the #kernelnewbies IRC channel on the OFTC IRC network. Several of us developers hang out on that channel. This server is home to #mm, #linux-rt, and several other Linux channels.
+Join the #linux-kselftest, #linuxtv, #kernelci, or #v4l IRC channels on freenode.</p>
+<ul class="simple">
+<li><p>This server recommends Nick registration. Server Name: irc.freenode.net/6667. You can register your Nick in the server tab with the command: /msg NickServ identify <password></p></li>
+<li><p>You can configure your chat client to auto-identify using the NickServ(/MSG NickServ+password) option - works on hexchat.
+Find spelling errors in kernel messages.
+Static code analysis error fixing: Static code analysis is the process of detecting errors and flaws in the source code. The Linux kernel Makefile can be invoked with options to enable the Sparse source code checker to run on all source files, or only on the recompiled files. Compile the kernel with the enabled source code checker, find errors, and fix them as needed.
+Fix the Syzbot null pointer dereference and WARN bug reports which include the reproducer to analyze. Run the reproducer to see if you can reproduce the problem. Look ​​​at the crash report and walk through sources for a possible cause. You might be able to fix problems.
+Look for opportunities to add/update .gitignore files for tools and Kselftest. Build tools and Kselftest and run git status. If there are binaries, then it is time to add a new .gitignore file and/or an entry to an existing .gitignore file.
+Run mainline kernels built with the CONFIG_KASAN, CONFIG_KMSAN, CONFIG_UBSAN, locking debug options mentioned earlier in the debugging section, and report problems if you see any. This gives you an opportunity to debug and fix problems. The community welcomes fixes and bug reports.</p></li>
+</ul>
+</section>
+
+<div class="section ablog__blog_comments">
+   
+</div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
