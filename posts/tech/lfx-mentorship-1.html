@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Common Commands &mdash; Zhaocheng Che&#39;s Blog 2026-01-30 documentation</title>
+  <title>Course &mdash; Zhaocheng Che&#39;s Blog 2026-01-31 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fbbfc274"></script>
+      <script src="../../_static/documentation_options.js?v=5fc7466d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -60,7 +60,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Common Commands</li>
+      <li class="breadcrumb-item active">Course</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/posts/tech/lfx-mentorship-1.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -69,7 +69,11 @@
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-              <section class="tex2jax_ignore mathjax_ignore" id="common-commands">
+              <section class="tex2jax_ignore mathjax_ignore" id="course">
+<h1>Course<a class="headerlink" href="#course" title="Link to this heading"></a></h1>
+<p>https://trainingportal.linuxfoundation.org/courses/a-beginners-guide-to-linux-kernel-development-lfd103</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="common-commands">
 <h1>Common Commands<a class="headerlink" href="#common-commands" title="Link to this heading"></a></h1>
 <p>Generate Patches</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="nb">format</span><span class="o">-</span><span class="n">patch</span> <span class="o">-</span><span class="mi">1</span> <span class="o">--</span><span class="n">pretty</span><span class="o">=</span><span class="n">fuller</span> <span class="mi">3</span><span class="n">a38e874d70b</span>
@@ -94,7 +98,14 @@
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">bindgen</span> <span class="n">pahole</span> <span class="n">jfsutils</span> <span class="n">xfsprogs</span> <span class="n">btrfs</span><span class="o">-</span><span class="n">progs</span> <span class="n">pcmciautils</span> <span class="n">quota</span> <span class="n">ppp</span>
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">nfs</span><span class="o">-</span><span class="n">common</span> <span class="n">grub2</span><span class="o">-</span><span class="n">common</span> <span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">tools</span> <span class="k">global</span>
 <span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">libelf</span><span class="o">-</span><span class="n">dev</span> <span class="n">libdw</span><span class="o">-</span><span class="n">dev</span> <span class="n">zlib1g</span><span class="o">-</span><span class="n">dev</span> <span class="n">pkg</span><span class="o">-</span><span class="n">config</span> <span class="n">clang</span> <span class="n">llvm</span>
-<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">cpio</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">cpio</span> <span class="n">gawk</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> \
+  <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">vim</span> <span class="n">git</span> <span class="n">cscope</span> <span class="n">libncurses</span><span class="o">-</span><span class="n">dev</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span> <span class="n">bison</span> <span class="n">flex</span> \  <span class="n">cpio</span> <span class="n">gawk</span> <span class="n">git</span><span class="o">-</span><span class="n">email</span> \
+  <span class="n">libelf</span><span class="o">-</span><span class="n">dev</span> <span class="n">libdw</span><span class="o">-</span><span class="n">dev</span> <span class="n">zlib1g</span><span class="o">-</span><span class="n">dev</span> <span class="n">pkg</span><span class="o">-</span><span class="n">config</span> <span class="n">clang</span> <span class="n">llvm</span> \
+  <span class="n">nfs</span><span class="o">-</span><span class="n">common</span> <span class="n">grub2</span><span class="o">-</span><span class="n">common</span> <span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">tools</span> <span class="k">global</span> \
+  <span class="n">bindgen</span> <span class="n">pahole</span> <span class="n">jfsutils</span> <span class="n">xfsprogs</span> <span class="n">btrfs</span><span class="o">-</span><span class="n">progs</span> <span class="n">pcmciautils</span> <span class="n">quota</span> <span class="n">ppp</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">codespell</span>
@@ -110,6 +121,25 @@ exec git show –format=email HEAD | ./scripts/checkpatch.pl –strict –codesp
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="compilation">
 <h1>Compilation<a class="headerlink" href="#compilation" title="Link to this heading"></a></h1>
+<p>PopOS setup</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">config</span><span class="o">-</span><span class="p">(</span><span class="n">uname</span> <span class="o">-</span><span class="n">r</span><span class="p">)</span> <span class="o">.</span><span class="n">config</span>
+<span class="n">make</span> <span class="n">olddefconfig</span>
+<span class="n">make</span> <span class="n">menuconfig</span>
+<span class="c1"># General Setup → Local version</span>
+
+<span class="n">sudo</span> <span class="n">make</span> <span class="n">modules_install</span>
+<span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
+<span class="c1"># ls /lib/modules/</span>
+<span class="c1"># ls /boot/efi/loader/entries/</span>
+<span class="c1"># cat /boot/efi/loader/entries/linux-*.conf</span>
+
+<span class="c1"># sudo rm -rf /lib/modules/6.8.0-mainline-dev</span>
+<span class="c1"># sudo rm /boot/vmlinuz-6.8.0-mainline-dev</span>
+<span class="c1"># sudo rm /boot/initrd.img-6.8.0-mainline-dev</span>
+<span class="c1"># sudo rm /boot/efi/loader/entries/linux-6.8.0-mainline-dev.conf</span>
+</pre></div>
+</div>
+<p>QEMU setup</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">x86_64_defconfig</span>
 <span class="n">make</span> <span class="n">kvm_guest</span><span class="o">.</span><span class="n">config</span>
 </pre></div>

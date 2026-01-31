@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XBOOTLDR Configuration &mdash; Zhaocheng Che&#39;s Blog 2026-01-31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5fc7466d"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Dataloader is Blocking" href="graphql-dataloader.html" />
+    <link rel="prev" title="Tech Posts" href="index.html" />     
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Zhaocheng Che's Blog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Blog</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tech Posts</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">XBOOTLDR Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-prepare-the-partition">Step 1 : Prepare the partition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-mount-the-partition">Step 2 : Mount the partition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-set-the-parition-type">Step 3 : Set the parition type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-tell-bootctl-about-this-partition-might-not-need">Step 4 : Tell bootctl about this partition (might not need)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-adding-image-and-config-in-xbootldr">Step 5 : Adding image and config in XBOOTLDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#result">Result</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphql-dataloader.html">Dataloader is Blocking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgbox.html">MsgBox In-place Serializer in Rust</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_c.html">C language Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../recap/index.html">Recap</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Zhaocheng Che's Blog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tech Posts</a></li>
+      <li class="breadcrumb-item active">XBOOTLDR Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/posts/tech/xbootldr-config.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+              <section class="tex2jax_ignore mathjax_ignore" id="xbootldr-configuration">
+<h1>XBOOTLDR Configuration<a class="headerlink" href="#xbootldr-configuration" title="Link to this heading"></a></h1>
+<p>I am a PopOS user, and recently I want to test kernels
+modified and compiled by myself.
+When installing the kernels, I have errors complaining about
+<code class="docutils literal notranslate"><span class="pre">/boot/efi</span></code> is full. I decide to go for the XBOOTLDR option
+which should allow me to extend the EFI partition, and it can be
+upto 32GB (max size of FAT32).</p>
+<p>Here’s the documentation I used: https://wiki.archlinux.org/title/Systemd-boot</p>
+<p>XBOOTLDR is an optional ‘extended boot loader partition’ that systemd-boot can read from the same physical disk as the ESP. It allows storing additional kernels and initrds safely without touching the main EFI partition.</p>
+<section id="step-1-prepare-the-partition">
+<h2>Step 1 : Prepare the partition<a class="headerlink" href="#step-1-prepare-the-partition" title="Link to this heading"></a></h2>
+<p>Because I need to shrink my root partition, I booted into PopOS recovery.
+Then I used <code class="docutils literal notranslate"><span class="pre">gparted</span></code>. After getting some empty space,
+I created an 8GB primary partition in FAT32,
+then I also toggle its <code class="docutils literal notranslate"><span class="pre">esp</span></code> flag on.</p>
+</section>
+<section id="step-2-mount-the-partition">
+<h2>Step 2 : Mount the partition<a class="headerlink" href="#step-2-mount-the-partition" title="Link to this heading"></a></h2>
+<p>Went back to my regular PopOS, I added this line to <code class="docutils literal notranslate"><span class="pre">/etc/fstab</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">UUID</span><span class="o">=</span><span class="mi">4282</span><span class="o">-</span><span class="mi">6209</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">xbootldr</span>  <span class="n">vfat</span>  <span class="n">defaults</span><span class="p">,</span><span class="n">umask</span><span class="o">=</span><span class="mi">0077</span>  <span class="mi">0</span>  <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Here, the UUID is derived from (nvme0n1p5 is the created partition)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">blkid</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">nvme0n1p5</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">nvme0n1p5</span><span class="p">:</span> <span class="n">LABEL_FATBOOT</span><span class="o">=</span><span class="s2">&quot;XBOOTLDR&quot;</span> <span class="n">LABEL</span><span class="o">=</span><span class="s2">&quot;XBOOTLDR&quot;</span> <span class="n">UUID</span><span class="o">=</span><span class="s2">&quot;4282-6209&quot;</span> <span class="n">BLOCK_SIZE</span><span class="o">=</span><span class="s2">&quot;512&quot;</span> <span class="n">TYPE</span><span class="o">=</span><span class="s2">&quot;vfat&quot;</span> <span class="n">PARTLABEL</span><span class="o">=</span><span class="s2">&quot;5&quot;</span>
+</pre></div>
+</div>
+<p>Now, <code class="docutils literal notranslate"><span class="pre">umount</span> <span class="pre">-a</span></code> will mount this XBOOTLDR partition at <code class="docutils literal notranslate"><span class="pre">boot/xbootldr</span></code>.</p>
+</section>
+<section id="step-3-set-the-parition-type">
+<h2>Step 3 : Set the parition type<a class="headerlink" href="#step-3-set-the-parition-type" title="Link to this heading"></a></h2>
+<p>In that ArchWiki page, it says: The XBOOTLDR partition must have a partition type GUID of bc13c2ff-59e6-4262-a352-b275fd6f7172 [1] (ea00 type for gdisk, xbootldr type for fdisk).</p>
+<p>So I changed the partition type via <code class="docutils literal notranslate"><span class="pre">gdisk</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># sudo gdisk /dev/nvme0n1
+
+Command (? for help): t
+Partition number (1-5): 5
+Current type is EA00 (XBOOTLDR partition)
+Hex code or GUID (L to show codes, Enter = EA00): ea00
+Changed type of partition to &#39;XBOOTLDR partition&#39;
+
+Command (? for help): w
+Do you want to proceed? (Y/N): Y
+</pre></div>
+</div>
+<p>Without setting the partition type, next command will fail.</p>
+</section>
+<section id="step-4-tell-bootctl-about-this-partition-might-not-need">
+<h2>Step 4 : Tell bootctl about this partition (might not need)<a class="headerlink" href="#step-4-tell-bootctl-about-this-partition-might-not-need" title="Link to this heading"></a></h2>
+<p>Then, run this command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">bootctl</span> <span class="o">--</span><span class="n">esp</span><span class="o">-</span><span class="n">path</span><span class="o">=/</span><span class="n">boot</span><span class="o">/</span><span class="n">efi</span> <span class="o">--</span><span class="n">boot</span><span class="o">-</span><span class="n">path</span><span class="o">=/</span><span class="n">boot</span><span class="o">/</span><span class="n">xbootldr</span><span class="o">/</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">bootctl</span> <span class="pre">list</span></code> output didn’t change after this command
+(reboot needed), I am not sure if this command is really needed.</p>
+</section>
+<section id="step-5-adding-image-and-config-in-xbootldr">
+<h2>Step 5 : Adding image and config in XBOOTLDR<a class="headerlink" href="#step-5-adding-image-and-config-in-xbootldr" title="Link to this heading"></a></h2>
+<p>Here’s my original <code class="docutils literal notranslate"><span class="pre">efi</span></code> folder</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>/b/efi#<span class="w"> </span>ls<span class="w"> </span>loader/entries/
+<span class="c1"># Pop_OS-current.conf  Recovery-CDAE-FADF.conf</span>
+
+/b/efi#<span class="w"> </span>cat<span class="w"> </span>loader/entries/Pop_OS-current.conf<span class="w"> </span>
+<span class="c1"># title Pop!_OS</span>
+<span class="c1"># linux /EFI/Pop_OS-e1db91ab-9998-4921-ac70-317989e51806/vmlinuz.efi</span>
+<span class="c1"># initrd /EFI/Pop_OS-e1db91ab-9998-4921-ac70-317989e51806/initrd.img</span>
+<span class="c1"># options root=UUID=e1db91ab-9998-4921-ac70-317989e51806 ro quiet loglevel=0 systemd.show_status=false splash</span>
+
+/b/efi#<span class="w"> </span>ls<span class="w"> </span>EFI/Pop_OS-e1db91ab-9998-4921-ac70-317989e51806/
+<span class="c1"># cmdline  initrd.img  vmlinuz.efi</span>
+</pre></div>
+</div>
+<p>I followed the same pattern to add kernel images in the <code class="docutils literal notranslate"><span class="pre">xbootldr</span></code> folder</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>/b/xbootldr#<span class="w"> </span>ls<span class="w"> </span>loader/entries/
+<span class="c1"># linux-6.19-rc7-chezhaocheng-lfx-0.conf  linux-current.conf</span>
+
+/b/xbootldr#<span class="w"> </span>cat<span class="w"> </span>loader/entries/linux-current.conf
+<span class="c1"># title   Pop!_OS Current [xbootldr]</span>
+<span class="c1"># linux   /EFI/Linux/vmlinuz-current</span>
+<span class="c1"># initrd  /EFI/Linux/initrd-current.img</span>
+<span class="c1"># options root=UUID=e1db91ab-9998-4921-ac70-317989e51806 ro quiet</span>
+
+/b/xbootldr#<span class="w"> </span>cat<span class="w"> </span>loader/entries/linux-6.19-rc7-chezhaocheng-lfx-0.conf<span class="w"> </span>
+<span class="c1"># title   Linux 6.19.0-rc7-chezhaocheng-lfx-0+</span>
+<span class="c1"># linux   /EFI/Linux/vmlinuz-6.19.0-rc7-chezhaocheng-lfx-0+</span>
+<span class="c1"># initrd  /EFI/Linux/initrd.img-6.19.0-rc7-chezhaocheng-lfx-0+</span>
+<span class="c1"># options root=UUID=e1db91ab-9998-4921-ac70-317989e51806 ro quiet splash</span>
+
+/b/xbootldr#<span class="w"> </span>ls<span class="w"> </span>EFI/Linux/
+<span class="c1"># initrd-current.img</span>
+<span class="c1"># initrd.img-6.19.0-rc7-chezhaocheng-lfx-0+</span>
+<span class="c1"># vmlinuz-6.19.0-rc7-chezhaocheng-lfx-0+</span>
+<span class="c1"># vmlinuz-current</span>
+</pre></div>
+</div>
+<p>Updates to the <code class="docutils literal notranslate"><span class="pre">xbootldr/loader</span></code> or <code class="docutils literal notranslate"><span class="pre">xbootldr/EFI</span></code>
+won’t reflect in <code class="docutils literal notranslate"><span class="pre">bootctl</span> <span class="pre">list</span></code> output in real time.
+So debug is a bit difficult, but a reboot will show you if those works.</p>
+</section>
+<section id="result">
+<h2>Result<a class="headerlink" href="#result" title="Link to this heading"></a></h2>
+<p><img alt="Boot Image" src="../../_images/boot.jpeg" /></p>
+<p>So now I have the original EFI entries, AND my custom built linux kernels.</p>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+      Previous:
+    
+    <a href="graphql-dataloader.html">
+      
+      <span>Dataloader is Blocking</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+    
+  </span>
+</div>
+  
+</div>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Tech Posts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="graphql-dataloader.html" class="btn btn-neutral float-right" title="Dataloader is Blocking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Zhaocheng Che, chezhaocheng[AT]outlook.com.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

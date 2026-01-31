@@ -1,3 +1,7 @@
+# Course
+
+https://trainingportal.linuxfoundation.org/courses/a-beginners-guide-to-linux-kernel-development-lfd103
+
 # Common Commands
 
 Generate Patches
@@ -29,7 +33,15 @@ sudo apt-get install git-email
 sudo apt-get install bindgen pahole jfsutils xfsprogs btrfs-progs pcmciautils quota ppp
 sudo apt-get install nfs-common grub2-common u-boot-tools global
 sudo apt install libelf-dev libdw-dev zlib1g-dev pkg-config clang llvm
-sudo apt install cpio
+sudo apt install cpio gawk
+```
+
+```
+sudo apt install \
+  build-essential vim git cscope libncurses-dev libssl-dev bison flex \  cpio gawk git-email \
+  libelf-dev libdw-dev zlib1g-dev pkg-config clang llvm \
+  nfs-common grub2-common u-boot-tools global \
+  bindgen pahole jfsutils xfsprogs btrfs-progs pcmciautils quota ppp
 ```
 
 ```
@@ -44,6 +56,28 @@ exec git show --format=email HEAD | ./scripts/checkpatch.pl --strict --codespell
 chmod a+x .git/hooks/post-commit
 
 # Compilation
+
+PopOS setup
+
+```
+cp /boot/config-(uname -r) .config
+make olddefconfig
+make menuconfig
+# General Setup → Local version
+
+sudo make modules_install
+sudo make install
+# ls /lib/modules/
+# ls /boot/efi/loader/entries/
+# cat /boot/efi/loader/entries/linux-*.conf
+
+# sudo rm -rf /lib/modules/6.8.0-mainline-dev
+# sudo rm /boot/vmlinuz-6.8.0-mainline-dev
+# sudo rm /boot/initrd.img-6.8.0-mainline-dev
+# sudo rm /boot/efi/loader/entries/linux-6.8.0-mainline-dev.conf
+```
+
+QEMU setup
 
 ```
 make x86_64_defconfig
